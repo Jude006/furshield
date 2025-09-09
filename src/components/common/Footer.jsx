@@ -48,15 +48,15 @@ const Footer = () => {
           <div>
             <h3 className="mb-4 font-semibold">Contact Info</h3>
             <div className="space-y-2 text-neutral-400">
-              <p>Email: support@furshield.com</p>
-              <p>Phone: (555) 123-PETS</p>
-              <p>Address: 123 Pet Care Ave, City</p>
+              <p>Email: furshield123@gmail.com</p>
+              <p>Phone: (+234) 8068078495</p>
+              <p>Address: 123 Sango ota ogun state</p>
             </div>
           </div>
         </div>
 
         <div className="pt-8 mt-12 text-sm text-center border-t border-neutral-800 text-neutral-400">
-          <p>© 2024 FurShield. All rights reserved.</p>
+          <p>© 2025 FurShield. All rights reserved.</p>
         </div>
       </div>
     </footer>

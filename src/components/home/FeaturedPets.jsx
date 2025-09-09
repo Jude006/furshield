@@ -255,7 +255,7 @@ const FeaturedPets = () => {
               onChange={(e) => handleFilterChange('age', e.target.value)}
               className="px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="">Any Age</option>
+              <option value="">Age</option>
               <option value="puppy">Puppy/Kitten (0-1)</option>
               <option value="young">Young (1-3)</option>
               <option value="adult">Adult (3-7)</option>
@@ -267,7 +267,7 @@ const FeaturedPets = () => {
               onChange={(e) => handleFilterChange('size', e.target.value)}
               className="px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="">Any Size</option>
+              <option value="">Size</option>
               <option value="Small">Small</option>
               <option value="Medium">Medium</option>
               <option value="Large">Large</option>
@@ -278,7 +278,7 @@ const FeaturedPets = () => {
               onChange={(e) => handleFilterChange('gender', e.target.value)}
               className="px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="">Any Gender</option>
+              <option value="">Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>

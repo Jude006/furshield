@@ -284,7 +284,7 @@ const ProductShowcase = () => {
                       }}
                       className="w-full px-4 py-2 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
-                      <option value="">Any Price</option>
+                      <option value="">Price</option>
                       <option value="0-25">Under $25</option>
                       <option value="25-50">$25 - $50</option>
                       <option value="50-100">$50 - $100</option>
