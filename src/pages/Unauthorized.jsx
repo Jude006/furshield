@@ -1,11 +1,11 @@
 import React from 'react'
 
-const About = () => {
+const Unauthorized = () => {
   return (
     <div>
-      Hello world
+      
     </div>
   )
 }
 
-export default About
+export default Unauthorized

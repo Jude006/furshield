@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import DashboardLayout from "../components/Pets/DashboardLayout";
+import DashboardLayout from "../pages/pets/DashboardLayout";
 import Dashboard from "../pages/pets/Dashboard";
 import MyPets from "../pages/pets/MyPets";
-import AddPet from "../pages/pets/AddPet";
+import AddPets from "../pages/pets/AddPets";
 import PetProfile from "../pages/pets/PetProfile";
 import HealthRecords from "../pages/pets/HealthRecords";
 import Appointment from "../pages/pets/Appointment";
@@ -21,7 +21,7 @@ const PetsRoutes = () => {
       <Route element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="/my-pets" element={<MyPets />} />
-        <Route path="/add-pet" element={<AddPet />} />
+        <Route path="/add-pet" element={<AddPets />} />
         <Route path="/pet/:petId" element={<PetProfile />} />
         <Route path="/health-records" element={<HealthRecords />} />
         <Route path="/appointments" element={<Appointment />} />
