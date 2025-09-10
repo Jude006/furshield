@@ -131,13 +131,13 @@ const HowItWorks = () => {
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link
-                to="/auth/register?role=pet-owner"
+                to="/auth/signup"
                 className="px-6 py-3 text-base font-semibold text-white transition-colors duration-300 rounded-lg shadow-md bg-primary-500 hover:bg-primary-600 hover:shadow-lg"
               >
                 Sign Up as Pet Owner
               </Link>
               <Link
-                to="/auth/register?role=veterinarian"
+                to="/auth/signup  "
                 className="px-6 py-3 text-base font-semibold transition-all duration-300 border-2 rounded-lg text-primary-600 border-primary-500 hover:bg-primary-500 hover:text-white"
               >
                 Join as Veterinarian

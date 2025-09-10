@@ -10,7 +10,7 @@ import ToTopButton from '../components/ui/ToTopButton'
 
 const About = () => {
   return (
-    <>
+    <div className='pt-16'>
     <AboutBanner />
     <OurStory />
     <TeamShowcase />
@@ -20,7 +20,7 @@ const About = () => {
     <FinalCTA />
     <ToTopButton />
 
-    </>
+    </div>
   )
 }
 

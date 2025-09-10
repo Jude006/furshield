@@ -84,7 +84,7 @@ const Header = () => {
                 Sign In
               </Link>
               <Link
-                to="/auth/register"
+                to="/auth/signup"
                 className={`px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-500 transform hover:scale-105 shadow-md hover:shadow-lg ${
                   isScrolled
                     ? 'bg-primary-500 hover:bg-primary-600 text-white'

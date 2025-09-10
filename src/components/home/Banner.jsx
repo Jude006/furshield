@@ -4,13 +4,11 @@ import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
-    <section className="relative flex items-center justify-center min-h-screen overflow-hidden">
-      {/* Background with gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-20"></div>
+    <section className="relative flex items-center justify-center min-h-screen overflow-hidden ">
+      <div className="absolute inset-0 bg-fixed bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800">
+        <div className="absolute inset-0 bg-fixed bg-[url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-20"></div>
       </div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-6xl px-4 pt-16 mx-auto text-center sm:px-6 lg:px-8 md:pt-0">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -44,7 +42,7 @@ const Banner = () => {
           className="flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <Link
-            to="/auth/register"
+            to="/auth/signup"
             className="px-6 py-3.5 text-base font-semibold text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 focus:ring-offset-primary-700"
           >
             Get Started Free

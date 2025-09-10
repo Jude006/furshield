@@ -12,6 +12,7 @@ import AuthRoutes from "./AuthRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Unauthorized from "../pages/Unauthorized"; 
 import AppLayout from "../layouts/AppLayout";
+import ChatBot from "../components/common/Chatbot";
 
 const AppRoutes = () => {
   return (
@@ -34,8 +35,7 @@ const AppRoutes = () => {
         
         <Route element={<ProtectedRoutes allowedRoles={["animal"]} />}>
           <Route path="/animalShelter-dashboard/*" element={<AnimalShelterRoutes />} />
-        </Route>
-        
+        </Route>m        
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
