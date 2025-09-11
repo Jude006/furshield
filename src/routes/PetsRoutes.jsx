@@ -14,7 +14,7 @@ import CareTips from "../pages/pets/CareTips";
 import Settings from "../pages/pets/Settings";
 import Notifications from "../pages/pets/Notifications";
 import ProductCatalog from "../pages/pets/ProductCatalog";
-x
+
 const PetsRoutes = () => {
   return (
     <Routes>
