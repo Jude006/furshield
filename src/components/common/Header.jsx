@@ -141,7 +141,7 @@ const Header = () => {
                   Sign In
                 </Link>
                 <Link
-                  to="/auth/register"
+                  to="/auth/signup"
                   className="flex-1 text-center px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
