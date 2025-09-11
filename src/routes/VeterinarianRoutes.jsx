@@ -12,6 +12,7 @@ import EarningsReports from "../pages/veterinarian/EarningsReports";
 import Settings from "../pages/veterinarian/Settings";
 import Notifications from "../pages/veterinarian/Notifications";
 
+
 const VeterinarianRoutes = () => {
   return (
     <Routes>

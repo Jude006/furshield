@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,10 @@ const Login = () => {
     password: '',
     rememberMe: false
   });
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { login, error, clearError } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -15,17 +20,35 @@ const Login = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    
+    if (error) clearError();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Login logic will go here
-    console.log(formData);
+    setIsLoading(true);
+    
+    const result = await login(formData.email, formData.password);
+    
+    if (result.success) {
+      switch (result.user?.userType) {
+        case 'veterinarian':
+          navigate('/veterinarian-dashboard');
+          break;
+        case 'shelter':
+          navigate('/animalShelter-dashboard');
+          break;
+        case 'petOwner':
+        default:
+          navigate('/pets-dashboard');
+      }
+    }
+    
+    setIsLoading(false);
   };
 
   return (
     <div className="flex min-h-screen bg-neutral-50">
-      {/* Left side - Form */}
       <div className="flex flex-col justify-center flex-1 px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
         <div className="w-full max-w-md mx-auto">
           <motion.div
@@ -48,6 +71,12 @@ const Login = () => {
                 </Link>
               </p>
             </div>
+
+            {error && (
+              <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                {error}
+              </div>
+            )}
 
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -110,50 +139,19 @@ const Login = () => {
               <div>
                 <motion.button
                   type="submit"
+                  disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Sign in
+                  {isLoading ? 'Signing in...' : 'Sign in'}
                 </motion.button>
-              </div>
-
-              <div className="mt-6">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-neutral-300" />
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-neutral-50 text-neutral-500">Or continue with</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium transition-colors duration-300 bg-white border rounded-lg shadow-sm border-neutral-300 text-neutral-700 hover:bg-neutral-50"
-                  >
-                    <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium transition-colors duration-300 bg-white border rounded-lg shadow-sm border-neutral-300 text-neutral-700 hover:bg-neutral-50"
-                  >
-                    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0C5.376 0 0 5.376 0 12c0 5.304 3.456 9.792 8.256 11.424.6.096.816-.264.816-.576 0-.288-.012-1.044-.018-2.088-3.36.732-4.068-1.62-4.068-1.62-.546-1.392-1.332-1.764-1.332-1.764-1.092-.744.084-.744.084-.744 1.2.084 1.836 1.236 1.836 1.236 1.068 1.824 2.808 1.296 3.492.996.108-.78.42-1.308.762-1.608-2.664-.3-5.466-1.332-5.466-5.94 0-1.308.468-2.388 1.236-3.228-.12-.3-.54-1.524.12-3.168 0 0 1.008-.324 3.3 1.232.96-.264 1.98-.396 3-.396 1.02 0 2.04.132 3 .396 2.292-1.56 3.3-1.232 3.3-1.232.66 1.644.24 2.868.12 3.168.768.84 1.236 1.92 1.236 3.228 0 4.62-2.808 5.628-5.484 5.928.432.372.816 1.104.816 2.22 0 1.608-.012 2.904-.012 3.3 0 .324.216.696.828.576C20.544 21.792 24 17.304 24 12c0-6.624-5.376-12-12-12z"/>
-                    </svg>
-                  </button>
-                </div>
               </div>
             </form>
           </motion.div>
         </div>
       </div>
 
-      {/* Right side - Illustration */}
       <div className="relative flex-1 hidden w-0 lg:block">
         <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600 opacity-90"></div>
         <div className="absolute inset-0 flex items-center justify-center p-12">

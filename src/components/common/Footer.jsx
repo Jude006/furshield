@@ -6,7 +6,6 @@ const Footer = () => {
     <footer className="py-16 text-white bg-neutral-900">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
           <div>
             <div className="flex items-center mb-4 space-x-2">
               <div className="flex items-center justify-center w-10 h-10 bg-primary-500 rounded-xl">
@@ -22,7 +21,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="mb-4 font-semibold">Quick Links</h3>
             <ul className="space-y-2 text-neutral-400">
@@ -33,7 +31,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
           <div>
             <h3 className="mb-4 font-semibold">Services</h3>
             <ul className="space-y-2 text-neutral-400">
@@ -44,7 +41,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h3 className="mb-4 font-semibold">Contact Info</h3>
             <div className="space-y-2 text-neutral-400">

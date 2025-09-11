@@ -12,7 +12,6 @@ import AuthRoutes from "./AuthRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Unauthorized from "../pages/Unauthorized"; 
 import AppLayout from "../layouts/AppLayout";
-import ChatBot from "../components/common/Chatbot";
 
 const AppRoutes = () => {
   return (
@@ -25,7 +24,7 @@ const AppRoutes = () => {
         <Route path="/auth/*" element={<AuthRoutes />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         
-        <Route element={<ProtectedRoutes allowedRoles={["pets"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["petOwner"]} />}>
           <Route path="/pets-dashboard/*" element={<PetsRoutes />} />
         </Route>
         
@@ -33,9 +32,10 @@ const AppRoutes = () => {
           <Route path="/veterinarian-dashboard/*" element={<VeterinarianRoutes />} />
         </Route>
         
-        <Route element={<ProtectedRoutes allowedRoles={["animal"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["shelter"]} />}>
           <Route path="/animalShelter-dashboard/*" element={<AnimalShelterRoutes />} />
-        </Route>m        
+        </Route>
+        
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

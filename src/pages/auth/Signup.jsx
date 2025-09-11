@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,9 +10,15 @@ const Signup = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    userType: 'pet-owner',
+    userType: 'petOwner',
+    contactNumber: '',
+    address: '',
     agreeToTerms: false
   });
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { register, error, clearError } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -19,17 +26,51 @@ const Signup = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    
+    if (error) clearError();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Signup logic will go here
-    console.log(formData);
+    
+    if (formData.password !== formData.confirmPassword) {
+      clearError();
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    const userData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+      userType: formData.userType,
+      contactNumber: formData.contactNumber,
+      address: formData.address
+    };
+    
+    const result = await register(userData);
+    
+    if (result.success) {
+      switch (result.user?.userType) {
+        case 'veterinarian':
+          navigate('/veterinarian-dashboard');
+          break;
+        case 'shelter':
+          navigate('/animalShelter-dashboard');
+          break;
+        case 'petOwner':
+        default:
+          navigate('/pets-dashboard');
+      }
+    }
+    
+    setIsLoading(false);
   };
 
   return (
     <div className="flex min-h-screen bg-neutral-50">
-      {/* Left side - Form */}
       <div className="flex flex-col justify-center flex-1 px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
         <div className="w-full max-w-md mx-auto">
           <motion.div
@@ -53,6 +94,12 @@ const Signup = () => {
               </p>
             </div>
 
+            {error && (
+              <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                {error}
+              </div>
+            )}
+
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
@@ -67,7 +114,7 @@ const Signup = () => {
                     required
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     placeholder="First name"
                   />
                 </div>
@@ -83,7 +130,7 @@ const Signup = () => {
                     required
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     placeholder="Last name"
                   />
                 </div>
@@ -101,8 +148,42 @@ const Signup = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                   placeholder="Enter your email"
+                />
+              </div>
+
+              {/* Contact Number */}
+              <div>
+                <label htmlFor="contactNumber" className="block mb-1 text-sm font-medium text-neutral-700">
+                  Contact Number
+                </label>
+                <input
+                  id="contactNumber"
+                  name="contactNumber"
+                  type="text"
+                  required
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <label htmlFor="address" className="block mb-1 text-sm font-medium text-neutral-700">
+                  Address
+                </label>
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  required
+                  value={formData.address}
+                  onChange={handleChange}
+                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  placeholder="Enter your address"
                 />
               </div>
 
@@ -119,7 +200,7 @@ const Signup = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     placeholder="Password"
                   />
                 </div>
@@ -135,11 +216,15 @@ const Signup = () => {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     placeholder="Confirm password"
                   />
                 </div>
               </div>
+
+              {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                <p className="text-sm text-red-600">Passwords do not match</p>
+              )}
 
               <div>
                 <label htmlFor="userType" className="block mb-1 text-sm font-medium text-neutral-700">
@@ -150,9 +235,9 @@ const Signup = () => {
                   name="userType"
                   value={formData.userType}
                   onChange={handleChange}
-                  className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 >
-                  <option value="pet-owner">Pet Owner</option>
+                  <option value="petOwner">Pet Owner</option>
                   <option value="veterinarian">Veterinarian</option>
                   <option value="shelter">Animal Shelter</option>
                 </select>
@@ -183,11 +268,12 @@ const Signup = () => {
               <div>
                 <motion.button
                   type="submit"
+                  disabled={isLoading || formData.password !== formData.confirmPassword || !formData.agreeToTerms}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Create account
+                  {isLoading ? 'Creating account...' : 'Create account'}
                 </motion.button>
               </div>
             </form>
@@ -195,7 +281,6 @@ const Signup = () => {
         </div>
       </div>
 
-      {/* Right side - Illustration */}
       <div className="relative flex-1 hidden w-0 lg:block">
         <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600 opacity-90"></div>
         <div className="absolute inset-0 flex items-center justify-center p-12">

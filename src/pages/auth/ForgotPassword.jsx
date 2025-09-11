@@ -1,16 +1,33 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { forgotPassword, error, clearError } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Forgot password logic will go here
-    console.log(email);
-    setSubmitted(true);
+    setIsLoading(true);
+    
+    const result = await forgotPassword(email);
+    
+    if (result.success) {
+      setSubmitted(true);
+    }
+    
+    setIsLoading(false);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (error) clearError();
   };
 
   return (
@@ -38,6 +55,12 @@ const ForgotPassword = () => {
           </div>
 
           <div className="px-4 py-8 mt-8 bg-white rounded-lg shadow sm:px-10">
+            {error && (
+              <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                {error}
+              </div>
+            )}
+
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -51,21 +74,30 @@ const ForgotPassword = () => {
                 </div>
                 <h3 className="mt-4 text-lg font-medium text-neutral-900">Check your email</h3>
                 <p className="mt-2 text-sm text-neutral-600">
-                  We've sent a password reset link to <span className="font-medium">{email}</span>
+                  We've sent a 6-digit verification code to <span className="font-medium">{email}</span>
                 </p>
                 <div className="mt-6">
                   <Link
-                    to="/auth/login"
-                    className="font-medium text-primary-600 hover:text-primary-500"
+                    to="/auth/reset-password"
+                    state={{ email }}
+                    className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                   >
-                    Back to sign in
+                    Continue to verification
                   </Link>
                 </div>
+                <div className="mt-4 text-sm">
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="font-medium text-primary-600 hover:text-primary-500"
+                  >
+                    Use a different email address
+                  </button>
+                </div>
               </motion.div>
-            ) : (
+            ) : ( 
               <>
                 <p className="mb-6 text-sm text-neutral-600">
-                  Enter your email address and we'll send you a link to reset your password.
+                  Enter your email address and we'll send you a 6-digit code to reset your password.
                 </p>
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div>
@@ -79,7 +111,7 @@ const ForgotPassword = () => {
                       autoComplete="email"
                       required
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={handleEmailChange}
                       className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                       placeholder="Enter your email"
                     />
@@ -88,11 +120,12 @@ const ForgotPassword = () => {
                   <div>
                     <motion.button
                       type="submit"
+                      disabled={isLoading}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                      className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Send reset link
+                      {isLoading ? 'Sending code...' : 'Send verification code'}
                     </motion.button>
                   </div>
                 </form>

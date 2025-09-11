@@ -78,7 +78,6 @@ const TeamShowcase = () => {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +93,6 @@ const TeamShowcase = () => {
           </p>
         </motion.div>
 
-        {/* Team Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -108,7 +106,6 @@ const TeamShowcase = () => {
               variants={itemVariants}
               className="text-center group"
             >
-              {/* Image Container */}
               <div className="relative mb-6">
                 <div className="relative overflow-hidden rounded-2xl">
                   <img
@@ -116,11 +113,9 @@ const TeamShowcase = () => {
                     alt={member.name}
                     className="object-cover w-full transition-transform duration-700 h-80 group-hover:scale-105"
                   />
-                  {/* Gradient Overlay */}
                   <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/20 to-transparent group-hover:opacity-100" />
                 </div>
                 
-                {/* Social Links */}
                 <motion.div 
                   className="absolute flex space-x-3 transition-opacity duration-300 transform -translate-x-1/2 opacity-0 bottom-4 left-1/2 group-hover:opacity-100"
                   whileHover={{ scale: 1.05 }}
@@ -134,7 +129,6 @@ const TeamShowcase = () => {
                 </motion.div>
               </div>
 
-              {/* Content */}
               <div>
                 <h3 className="mb-2 text-xl font-semibold text-neutral-900 font-display">
                   {member.name}
@@ -150,7 +144,6 @@ const TeamShowcase = () => {
           ))}
         </motion.div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -32,7 +32,6 @@ const OurStory = () => {
   return (
     <section className="py-20 text-white bg-neutral-900">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -49,12 +48,9 @@ const OurStory = () => {
           </p>
         </motion.div>
 
-        {/* Timeline */}
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary-500 to-secondary-500" />
+          <div className="absolute hidden w-0.5 h-full transform -translate-x-1/2 md:block left-1/2 bg-gradient-to-b from-primary-500 to-secondary-500" />
           
-          {/* Timeline items */}
           <div className="space-y-12">
             {timeline.map((item, index) => (
               <motion.div
@@ -63,39 +59,35 @@ const OurStory = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.7, delay: index * 0.2 }}
-                className={`relative flex items-center ${
-                  index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+                className={`relative flex flex-col items-center md:items-start md:flex-row ${
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
               >
-                {/* Content */}
-                <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12' : 'pl-12'}`}>
+                <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}
-                    className="p-8 transition-all duration-300 border bg-neutral-800 rounded-2xl border-neutral-700 hover:border-primary-500"
+                    className="p-6 sm:p-8 transition-all duration-300 border bg-neutral-800 rounded-2xl border-neutral-700 hover:border-primary-500"
                   >
                     <div className="mb-2 text-2xl">{item.icon}</div>
                     <div className="mb-2 text-sm font-semibold text-primary-400">{item.year}</div>
-                    <h3 className="mb-4 text-xl font-semibold text-white font-display">{item.title}</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-white sm:text-xl font-display">{item.title}</h3>
                     <p className="leading-relaxed text-neutral-400">{item.description}</p>
                   </motion.div>
                 </div>
 
-                {/* Center dot */}
-                <div className="absolute z-10 w-6 h-6 transform -translate-x-1/2 border-4 rounded-full left-1/2 bg-primary-500 border-neutral-900" />
+                <div className="absolute z-10 hidden w-6 h-6 transform -translate-x-1/2 border-4 rounded-full md:block left-1/2 bg-primary-500 border-neutral-900" />
 
-                {/* Year marker */}
-                <div className={`absolute top-0 ${
-                  index % 2 === 0 ? 'left-1/2 ml-8' : 'right-1/2 mr-8'
-                } transform -translate-y-1/2`}>
-                  <span className="text-2xl font-bold text-primary-400 font-display">{item.year}</span>
+                <div className={`mt-4 md:mt-0 md:absolute md:top-0 ${
+                  index % 2 === 0 ? 'md:left-1/2 md:ml-8' : 'md:right-1/2 md:mr-8'
+                } md:transform md:-translate-y-1/2`}>
+                  <span className="text-xl font-bold text-primary-400 sm:text-2xl font-display">{item.year}</span>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Mission Statement */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -103,8 +95,8 @@ const OurStory = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mt-20 text-center"
         >
-          <div className="p-12 border bg-gradient-to-r from-primary-900 to-secondary-900 rounded-2xl border-primary-700">
-            <h3 className="mb-6 text-2xl font-light text-white font-display">
+          <div className="p-8 sm:p-12 border bg-gradient-to-r from-primary-900 to-secondary-900 rounded-2xl border-primary-700">
+            <h3 className="mb-6 text-lg font-light text-white sm:text-2xl font-display">
               "Our mission is simple: to ensure every pet receives the love, care, and protection they deserve through innovative technology and compassionate service."
             </h3>
             <p className="text-primary-300">— FurShield Team</p>

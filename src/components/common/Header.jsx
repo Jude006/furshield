@@ -31,7 +31,6 @@ const Header = () => {
     }`}>
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center flex-shrink-0">
             <div className="flex items-center space-x-2">
               <div className="flex items-center justify-center w-10 h-10 bg-primary-500 rounded-xl">
@@ -48,7 +47,6 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation - ALWAYS VISIBLE */}
           <div className="hidden md:block">
             <div className="flex items-baseline ml-10 space-x-8">
               {navItems.map((item) => (
@@ -70,7 +68,6 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Auth Buttons - ALWAYS VISIBLE */}
           <div className="hidden md:block">
             <div className="flex items-center space-x-4">
               <Link
@@ -96,7 +93,6 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -118,7 +114,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {isOpen && (
         <div className="bg-white shadow-lg md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">

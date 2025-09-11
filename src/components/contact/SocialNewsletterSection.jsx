@@ -7,12 +7,10 @@ const SocialNewsletterSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle newsletter subscription here
     console.log('Subscribed with:', email);
     setSubscribed(true);
     setEmail('');
     
-    // Reset after 3 seconds
     setTimeout(() => {
       setSubscribed(false);
     }, 3000);
@@ -84,7 +82,6 @@ const SocialNewsletterSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Social Media Section */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -139,7 +136,6 @@ const SocialNewsletterSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Newsletter Section */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}

@@ -52,11 +52,9 @@ const ContactBanner = () => {
           }}
         />
         
-        {/* Subtle grid overlay */}
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-6xl px-4 mx-auto text-center sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -64,7 +62,6 @@ const ContactBanner = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center"
         >
-          {/* Elegant Breadcrumb */}
           <motion.nav
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -83,7 +80,6 @@ const ContactBanner = () => {
             </div>
           </motion.nav>
 
-          {/* Premium Headline with Staggered Animation */}
           <div className="mb-12">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -119,7 +115,6 @@ const ContactBanner = () => {
                 <span className="text-secondary-300">Companions</span>
               </h2>
               
-              {/* Elegant underline effect */}
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
@@ -141,7 +136,6 @@ const ContactBanner = () => {
             </motion.div>
           </div>
 
-          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -152,7 +146,6 @@ const ContactBanner = () => {
             Reach out to us for assistance, guidance, or collaboration opportunities.
           </motion.p>
 
-          {/* Premium Contact Methods */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -204,10 +197,8 @@ const ContactBanner = () => {
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
                 className="relative flex flex-col items-center p-8 overflow-hidden transition-all duration-500 border rounded-2xl bg-gradient-to-b from-white/5 to-transparent backdrop-blur-md border-white/10 hover:border-primary-400/30 group"
               >
-                {/* Hover effect background */}
                 <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 group-hover:opacity-100" />
                 
-                {/* Animated icon container */}
                 <motion.div 
                   className="relative z-10 flex items-center justify-center w-20 h-20 mb-6 transition-all duration-500 rounded-2xl bg-gradient-to-br from-primary-700/20 to-primary-400/20 group-hover:from-primary-600/30 group-hover:to-primary-300/30"
                   whileHover={{ rotate: 5, scale: 1.05 }}
@@ -222,7 +213,6 @@ const ContactBanner = () => {
                   {method.detail}
                 </p>
                 
-                {/* Subtle arrow on hover */}
                 <motion.div 
                   className="relative z-10 mt-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                   initial={{ x: -5 }}

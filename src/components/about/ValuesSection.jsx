@@ -60,7 +60,6 @@ const ValuesSection = () => {
   return (
     <section className="py-20 bg-neutral-50">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +75,6 @@ const ValuesSection = () => {
           </p>
         </motion.div>
 
-        {/* Values Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -90,7 +88,6 @@ const ValuesSection = () => {
               variants={itemVariants}
               className="p-8 text-center transition-all duration-300 bg-white border group rounded-2xl border-neutral-200 hover:border-primary-300 hover:shadow-lg"
             >
-              {/* Icon Container */}
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.3 }}
@@ -99,7 +96,6 @@ const ValuesSection = () => {
                 {value.icon}
               </motion.div>
 
-              {/* Content */}
               <h3 className="mb-4 text-xl font-semibold text-neutral-900 font-display">
                 {value.title}
               </h3>
@@ -110,7 +106,6 @@ const ValuesSection = () => {
           ))}
         </motion.div>
 
-        {/* Philosophy Statement */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

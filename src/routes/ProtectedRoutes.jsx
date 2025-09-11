@@ -1,21 +1,27 @@
-import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoutes = ({ allowedRoles }) => {
-  const mockUser = {
-    role: 'pets', 
-    isAuthenticated: true
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-12 h-12 border-b-2 rounded-full animate-spin border-primary-600"></div>
+      </div>
+    );
   }
 
-  if (!mockUser.isAuthenticated) {
-    return <Navigate to="/auth/login" replace />
+  if (!user) {
+    return <Navigate to="/auth/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(mockUser.role)) {
-    return <Navigate to="/unauthorized" replace />
+  if (allowedRoles && !allowedRoles.includes(user.userType)) {
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  return <Outlet />
-}
+  return <Outlet />;
+};
 
-export default ProtectedRoutes
+export default ProtectedRoutes;

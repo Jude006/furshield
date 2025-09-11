@@ -74,14 +74,12 @@ const AchievementsSection = () => {
           </p>
         </motion.div>
 
-        {/* Achievements Grid */}
         <div className="grid grid-cols-1 gap-8 mb-16 md:grid-cols-2 lg:grid-cols-4">
           {achievements.map((achievement, index) => (
             <AchievementItem key={index} {...achievement} />
           ))}
         </div>
 
-        {/* Impact Story */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

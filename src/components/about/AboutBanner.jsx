@@ -30,7 +30,6 @@ const AboutBanner = () => {
         />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-6xl px-4 mx-auto text-center sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -38,7 +37,6 @@ const AboutBanner = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center"
         >
-          {/* Minimal Breadcrumb */}
           <motion.nav
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -86,7 +84,6 @@ const AboutBanner = () => {
             </motion.div>
           </div>
 
-          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -97,7 +94,6 @@ const AboutBanner = () => {
             We're building a future where every pet receives the love and attention they deserve.
           </motion.p>
 
-          {/* Animated Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,7 +121,6 @@ const AboutBanner = () => {
             ))}
           </motion.div>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

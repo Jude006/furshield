@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// This is a simplified version - you'll need to implement actual API calls
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
 
-  // Sample responses - replace with actual API calls to your chatbot service
   const getBotResponse = async (message) => {
-    // This would be replaced with actual API call to Dialogflow or similar service
     const responses = [
       "I can help with pet care questions! What would you like to know?",
       "For appointment booking, please visit our booking section.",
@@ -24,19 +21,16 @@ const ChatBot = () => {
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
     
-    // Add user message
     const userMessage = { text: inputMessage, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     
-    // Get and add bot response
     const botResponse = await getBotResponse(inputMessage);
     setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
   };
 
   return (
     <>
-      {/* Chatbot toggle button */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -48,7 +42,6 @@ const ChatBot = () => {
         </svg>
       </motion.button>
 
-      {/* Chatbot window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -58,7 +51,6 @@ const ChatBot = () => {
             transition={{ duration: 0.3 }}
             className="fixed z-50 flex flex-col bg-white border rounded-lg shadow-xl bottom-24 right-6 w-80 h-96 border-neutral-200"
           >
-            {/* Header */}
             <div className="flex items-center p-4 text-white rounded-t-lg bg-primary-600">
               <div className="w-3 h-3 mr-2 bg-green-400 rounded-full"></div>
               <h3 className="font-medium">Pet Care Assistant</h3>
@@ -72,7 +64,6 @@ const ChatBot = () => {
               </button>
             </div>
 
-            {/* Messages */}
             <div className="flex-1 p-4 overflow-y-auto">
               {messages.length === 0 ? (
                 <div className="my-8 text-center text-neutral-500">
@@ -98,7 +89,6 @@ const ChatBot = () => {
               )}
             </div>
 
-            {/* Input */}
             <div className="p-4 border-t border-neutral-200">
               <div className="flex">
                 <input
