@@ -49,7 +49,7 @@ const Banner = () => {
           </Link>
           <Link
             to="/services"
-            className="px-6 py-3.5 text-base font-semibold text-white transition-all duration-300 border-2 border-white/30 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm hover:border-white/40 transform hover:-translate-y-0.5 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700"
+            className="px-6 py-3.5 text-base font-semibold text-white hover:scale-100 transition-all duration-300 border-2 border-white/30 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm hover:border-white/40 transform hover:-translate-y-0.5 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700"
           >
             Learn More
           </Link>

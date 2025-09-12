@@ -75,7 +75,7 @@ const DashboardLayout = () => {
         !isMobile && showSideBar ? 'lg:ml-80' : 'lg:ml-0'
       } transition-all duration-300`}>
         <DashboardNav setShowSideBar={toggleSideBar} showSideBar={showSideBar} />
-        <div className="p-6">
+        <div className="">
           <Outlet />
         </div>
       </main>

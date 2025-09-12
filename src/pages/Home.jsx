@@ -6,7 +6,6 @@ import ProductShowcase from '../components/home/ProductsShowcase'
 import VeterinariansDirectory from '../components/home/VeterinariansDirectory'
 import Testimonials from '../components/home/Testimonials'
 import FinalCTA from '../components/home/FinalCTA'
-import ToTopButton from '../components/ui/ToTopButton'
 
 const Home = () => {
   return (
@@ -18,7 +17,6 @@ const Home = () => {
     <VeterinariansDirectory />
     <Testimonials />
     <FinalCTA />
-    <ToTopButton />
     </div>
   )
 }

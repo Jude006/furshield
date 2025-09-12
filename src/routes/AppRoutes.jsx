@@ -12,6 +12,7 @@ import AuthRoutes from "./AuthRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Unauthorized from "../pages/Unauthorized"; 
 import AppLayout from "../layouts/AppLayout";
+import ToTopButton from "../components/ui/ToTopButton";
 
 const AppRoutes = () => {
   return (

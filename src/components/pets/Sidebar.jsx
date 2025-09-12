@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   FiHome, 
@@ -17,9 +17,21 @@ import {
   FiUser,
   FiLogOut
 } from 'react-icons/fi';
+import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Sidebar = ({ setShowSideBar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to sign out?')) {
+      logout();
+      toast.success('Successfully signed out');
+      navigate('/login');
+    }
+  };
 
   const menuItems = [
     { path: '/pets-dashboard', icon: FiHome, label: 'Dashboard' },
@@ -50,7 +62,7 @@ const Sidebar = ({ setShowSideBar }) => {
         </Link>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto font-sans">
         {menuItems.map((item, index) => {
           const IconComponent = item.icon;
           const isActive = location.pathname === item.path;
@@ -98,12 +110,19 @@ const Sidebar = ({ setShowSideBar }) => {
             <FiUser className="w-5 h-5 text-primary-600" />
           </div>
           <div className="flex-1 ml-3">
-            <p className="text-sm font-medium text-neutral-800">Sarah Johnson</p>
-            <p className="text-xs text-neutral-500">Pet Owner</p>
+            <p className="text-sm font-medium text-neutral-800">
+              {user ? `${user.firstName} ${user.lastName}` : 'User Name'}
+            </p>
+            <p className="text-xs text-neutral-500">
+              {user ? user.userType.charAt(0).toUpperCase() + user.userType.slice(1) : 'Pet Owner'}
+            </p>
           </div>
         </div>
         
-        <button className="flex items-center w-full px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800">
+        <button
+          onClick={handleLogout}
+          className="flex items-center w-full px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800"
+        >
           <FiLogOut className="w-5 h-5 text-neutral-400" />
           <span className="ml-3">Sign Out</span>
         </button>
