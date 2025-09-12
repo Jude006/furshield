@@ -6,7 +6,6 @@ import ValuesSection from '../components/about/ValuesSection'
 import AchievementsSection from '../components/about/AchievementItem'
 import Testimonials from '../components/home/Testimonials'
 import FinalCTA from '../components/home/FinalCTA'
-import ToTopButton from '../components/ui/ToTopButton'
 
 const About = () => {
   return (
@@ -18,8 +17,6 @@ const About = () => {
     <AchievementsSection />
     <Testimonials />
     <FinalCTA />
-    <ToTopButton />
-
     </div>
   )
 }

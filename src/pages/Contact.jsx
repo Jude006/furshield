@@ -5,7 +5,6 @@ import TeamShowcase from '../components/about/TeamShowcase'
 import FAQSection from '../components/contact/FAQSection'
 import LocationMap from '../components/contact/LocationMap'
 import SocialNewsletterSection from '../components/contact/SocialNewsletterSection'
-import ChatBot from '../components/common/Chatbot'
 
 const Contact = () => {
   return (
@@ -16,7 +15,6 @@ const Contact = () => {
       <FAQSection />
       <LocationMap />
       <SocialNewsletterSection />
-      <ChatBot />
     </div>
   )
 }
