@@ -1,15 +1,13 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React , {useState}from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 import { 
   FiHome, 
   FiCalendar,
   FiClock,
-  FiFileText,
   FiActivity,
   FiUser,
-  FiDollarSign,
-  FiSettings,
   FiBell,
   FiLogOut,
   FiUsers,
@@ -18,6 +16,9 @@ import {
 
 const VetSidebar = ({ setShowSideBar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const menuItems = [
     { path: '/veterinarian-dashboard', icon: FiHome, label: 'Dashboard' },
@@ -26,11 +27,23 @@ const VetSidebar = ({ setShowSideBar }) => {
     { path: '/veterinarian-dashboard/patient-records', icon: FiUsers, label: 'Patient Records' },
     { path: '/veterinarian-dashboard/treatment-logs', icon: FiActivity, label: 'Treatment Logs' },
     { path: '/veterinarian-dashboard/availability', icon: FiBook, label: 'Availability Schedule' },
-    { path: '/veterinarian-dashboard/profile', icon: FiUser, label: 'Profile' },
-    { path: '/veterinarian-dashboard/earnings', icon: FiDollarSign, label: 'Earnings Reports' },
     { path: '/veterinarian-dashboard/notifications', icon: FiBell, label: 'Notifications' },
-    { path: '/veterinarian-dashboard/settings', icon: FiSettings, label: 'Settings' },
+    { path: '/veterinarian-dashboard/profile', icon: FiUser, label: 'Profile' },
   ];
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logout();
+      toast.success('Logged out successfully');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Failed to logout. Please try again.');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
 
   return (
     <div className="flex flex-col h-full bg-white border-r w-80 border-neutral-200">
@@ -88,22 +101,45 @@ const VetSidebar = ({ setShowSideBar }) => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-neutral-200">
-        <div className="flex items-center px-4 py-3 mb-2 transition-colors duration-200 rounded-lg hover:bg-neutral-50">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-blue-100 to-cyan-100">
-            <FiUser className="w-5 h-5 text-blue-600" />
+       <div className="p-4 border-t border-neutral-200">
+          {/* User Profile Section */}
+          <div className="flex items-center px-4 py-3 mb-2 transition-colors duration-200 rounded-lg hover:bg-neutral-50">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-blue-100 to-cyan-100">
+              {user?.profilePicture ? (
+                <img 
+                  src={user.profilePicture} 
+                  alt={`Dr. ${user.firstName} ${user.lastName}`}
+                  className="object-cover w-10 h-10 rounded-full"
+                />
+              ) : (
+                <span className="text-lg font-medium text-blue-600">
+                  {user?.firstName?.[0]}{user?.lastName?.[0]}
+                </span>
+              )}
+            </div>
+            <div className="flex-1 ml-3">
+              <p className="text-sm font-medium text-neutral-800">
+                Dr. {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs text-neutral-500">
+                {user?.specialization || 'Veterinarian'}
+                {user?.clinic && ` • ${user.clinic}`}
+              </p>
+            </div>
           </div>
-          <div className="flex-1 ml-3">
-            <p className="text-sm font-medium text-neutral-800">Dr. Sarah Johnson</p>
-            <p className="text-xs text-neutral-500">Veterinarian</p>
-          </div>
+          
+          {/* Logout Button */}
+          <button 
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="flex items-center w-full px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FiLogOut className="w-5 h-5 text-neutral-400" />
+            <span className="ml-3">
+              {isLoggingOut ? 'Signing out...' : 'Sign Out'}
+            </span>
+          </button>
         </div>
-        
-        <button className="flex items-center w-full px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800">
-          <FiLogOut className="w-5 h-5 text-neutral-400" />
-          <span className="ml-3">Sign Out</span>
-        </button>
-      </div>
     </div>
   );
 };

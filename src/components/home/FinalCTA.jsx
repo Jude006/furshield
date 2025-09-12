@@ -22,7 +22,7 @@ const FinalCTA = () => {
 
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link
-              to="/auth/register"
+              to="/auth/signup"
               className="px-8 py-4 font-semibold transition-colors duration-300 bg-white rounded-lg text-primary-600 hover:bg-neutral-100"
             >
               Get Started Free
@@ -32,7 +32,7 @@ const FinalCTA = () => {
               to="/services"
               className="px-8 py-4 font-semibold text-white transition-colors duration-300 border-2 border-white rounded-lg hover:bg-white hover:text-primary-600"
             >
-              Learn More
+              Contact Us
             </Link>
           </div>
 

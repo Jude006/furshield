@@ -4,7 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Footer from '../components/common/Footer'
 
 const AppLayout = () => {
-    const hideNavbar = ['/auth/login', '/auth/signup', '/pets-dashboard' , '/vet-dashboard', '/veterinarian-dashboard', '/animalShelter-dashboard','/auth/*']
+    const hideNavbar = ['/auth/login', '/auth/signup', '/pets-dashboard' , '/vet-dashboard', '/veterinarian-dashboard', '/animalShelter-dashboard','/auth/*', '*']
   const location = useLocation()
   const shouldHideNavbar = hideNavbar.some(route => location.pathname.startsWith(route))
   return (

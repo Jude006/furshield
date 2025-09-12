@@ -14,6 +14,7 @@ import CareTips from "../pages/pets/CareTips";
 import Settings from "../pages/pets/Settings";
 import Notifications from "../pages/pets/Notifications";
 import ProductCatalog from "../pages/pets/ProductCatalog";
+import ProductDetails from "../pages/pets/ProductDetails";
 
 const PetsRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const PetsRoutes = () => {
         <Route path="/appointments" element={<Appointment />} />
         <Route path="/book-appointment" element={<BookAppointment />} />
         <Route path="/products" element={<ProductCatalog />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/care-tips" element={<CareTips />} />

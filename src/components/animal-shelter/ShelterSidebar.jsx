@@ -5,13 +5,10 @@ import {
   FiHome, 
   FiHeart,
   FiPlus,
-  FiUsers,
   FiFileText,
   FiActivity,
-  FiClipboard,
   FiUser,
   FiBarChart2,
-  FiSettings,
   FiBell,
   FiLogOut,
   FiMail
@@ -27,11 +24,9 @@ const ShelterSidebar = ({ setShowSideBar }) => {
     { path: '/animalShelter-dashboard/adoption-applications', icon: FiMail, label: 'Applications' },
     { path: '/animalShelter-dashboard/health-records', icon: FiFileText, label: 'Health Records' },
     { path: '/animalShelter-dashboard/care-logs', icon: FiActivity, label: 'Care Logs' },
-    { path: '/animalShelter-dashboard/staff-management', icon: FiUsers, label: 'Staff Management' },
-    { path: '/animalShelter-dashboard/shelter-profile', icon: FiUser, label: 'Shelter Profile' },
     { path: '/animalShelter-dashboard/reports', icon: FiBarChart2, label: 'Reports' },
     { path: '/animalShelter-dashboard/notifications', icon: FiBell, label: 'Notifications' },
-    { path: '/animalShelter-dashboard/settings', icon: FiSettings, label: 'Settings' },
+    { path: '/animalShelter-dashboard/shelter-profile', icon: FiUser, label: 'Shelter Profile' },
   ];
 
   return (

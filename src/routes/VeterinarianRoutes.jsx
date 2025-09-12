@@ -8,7 +8,6 @@ import PatientRecords from "../pages/veterinarian/PatientRecords";
 import TreatmentLogs from "../pages/veterinarian/TreatmentLogs";
 import AvailabilitySchedule from "../pages/veterinarian/AvailabilitySchedule";
 import VetProfile from "../pages/veterinarian/VetProfile";
-import EarningsReports from "../pages/veterinarian/EarningsReports";
 import Settings from "../pages/veterinarian/Settings";
 import Notifications from "../pages/veterinarian/Notifications";
 
@@ -24,7 +23,6 @@ const VeterinarianRoutes = () => {
         <Route path="treatment-logs" element={<TreatmentLogs />} />
         <Route path="availability" element={<AvailabilitySchedule />} />
         <Route path="profile" element={<VetProfile />} />
-        <Route path="earnings" element={<EarningsReports />} />
         <Route path="settings" element={<Settings />} />
         <Route path="notifications" element={<Notifications />} />
       </Route>
