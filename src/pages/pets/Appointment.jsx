@@ -94,7 +94,7 @@ const Appointment = () => {
                   <FaPaw className="w-8 h-8 text-primary-600" />
                   <h1 className="text-3xl font-bold text-neutral-900 font-display">Appointments</h1>
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex flex-wrap space-x-3">
                   <button
                     onClick={() => navigate('/pets-dashboard')}
                     className="flex items-center px-4 py-2 font-sans text-sm font-medium rounded-lg text-neutral-700 bg-neutral-100 hover:bg-neutral-200"
