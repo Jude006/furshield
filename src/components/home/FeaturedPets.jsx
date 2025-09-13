@@ -452,7 +452,7 @@ const FeaturedPets = () => {
                     </div>
                     <div className="mt-6">
                       <Link
-                        to="/auth/register"
+                        to="/auth/signup"
                         className="w-full px-4 py-3 font-medium text-white rounded-lg bg-primary-500 hover:bg-primary-600 transition-colors duration-300 text-center"
                       >
                         Contact Shelter
