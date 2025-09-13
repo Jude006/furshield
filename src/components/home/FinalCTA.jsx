@@ -29,16 +29,12 @@ const FinalCTA = () => {
             </Link>
             
             <Link
-              to="/services"
+              to="/contact"
               className="px-8 py-4 font-semibold text-white transition-colors duration-300 border-2 border-white rounded-lg hover:bg-white hover:text-primary-600"
             >
               Contact Us
             </Link>
           </div>
-
-          <p className="mt-6 text-sm text-primary-200">
-            No credit card required • 30-day free trial
-          </p>
         </motion.div>
       </div>
     </section>

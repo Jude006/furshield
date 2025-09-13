@@ -5,7 +5,7 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah M.",
+      name: "Miss Itohan",
       role: "Pet Owner",
       content: "FurShield revolutionized how I care for my two dogs. The health tracking features saved us during a emergency visit!",
       rating: 5,
@@ -13,7 +13,7 @@ const Testimonials = () => {
     },
     {
       id: 2,
-      name: "Dr. James Wilson",
+      name: "Dr. Ayomide",
       role: "Veterinarian",
       content: "As a vet, this platform streamlined my appointments and made medical record access seamless. Game changer!",
       rating: 5,
@@ -21,7 +21,7 @@ const Testimonials = () => {
     },
     {
       id: 3,
-      name: "Animal Rescue CA",
+            name: "Jude O.",
       role: "Shelter",
       content: "Our adoption rates increased by 40% since joining FurShield. The exposure to caring owners is incredible.",
       rating: 5,
@@ -71,7 +71,7 @@ const Testimonials = () => {
                 <img
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className="w-12 h-12 mr-4 rounded-full"
+                  className="w-12 h-12 mr-4 rounded-full object-cover object-top"
                 />
                 <div>
                   <h4 className="font-semibold text-neutral-900">{testimonial.name}</h4>

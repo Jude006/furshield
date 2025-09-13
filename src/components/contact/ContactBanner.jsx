@@ -161,7 +161,7 @@ const ContactBanner = () => {
                 ), 
                 title: 'Email Us', 
                 detail: 'support@furshield.com', 
-                link: 'mailto:support@furshield.com',
+                link: 'judeorifa28@gmail.com',
                 delay: 0.1
               },
               { 
@@ -171,7 +171,7 @@ const ContactBanner = () => {
                   </svg>
                 ), 
                 title: 'Call Us', 
-                detail: '+1 (555) 123-PAWS', 
+                detail: '+234 (806) 13-PAWS', 
                 link: 'tel:+15551237297',
                 delay: 0.2
               },
@@ -183,7 +183,7 @@ const ContactBanner = () => {
                   </svg>
                 ), 
                 title: 'Visit Us', 
-                detail: '123 Pet Care Avenue', 
+                detail: '13 Aptech Ota Care Avenue', 
                 link: '#location',
                 delay: 0.3
               }
@@ -234,7 +234,7 @@ const ContactBanner = () => {
           >
             <motion.a
               href="#contact-form"
-              className="relative px-10 py-5 overflow-hidden font-medium text-white transition-all duration-500 rounded-2xl group"
+              className="relative px-6 py-3 overflow-hidden font-medium text-white transition-all duration-500 rounded-3xl group"
               whileHover={{ y: -5 }}
               whileTap={{ scale: 0.98 }}
             >

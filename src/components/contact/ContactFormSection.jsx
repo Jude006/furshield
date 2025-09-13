@@ -240,7 +240,7 @@ const ContactFormSection = () => {
                     </div>
                     <div>
                       <p className="font-medium text-neutral-800">Phone</p>
-                      <p className="text-neutral-600">+1 (555) 123-PAWS</p>
+                      <p className="text-neutral-600">+234 (806) 13-PAWS</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -252,7 +252,7 @@ const ContactFormSection = () => {
                     </div>
                     <div>
                       <p className="font-medium text-neutral-800">Address</p>
-                      <p className="text-neutral-600">123 Pet Care Avenue</p>
+                      <p className="text-neutral-600">13 Aptech Ota Care Avenue</p>
                     </div>
                   </div>
                 </div>

@@ -13,7 +13,7 @@ const DashboardNav = ({ setShowSideBar, showSideBar }) => {
     if (window.confirm('Are you sure you want to sign out?')) {
       logout();
       toast.success('Successfully signed out');
-      navigate('/login');
+      navigate('/auth/login');
     }
   };
 
@@ -80,8 +80,8 @@ const DashboardNav = ({ setShowSideBar, showSideBar }) => {
                 exit={{ opacity: 0, y: -10 }}
                 className="absolute right-0 z-50 w-48 py-1 mt-2 bg-white border rounded-lg shadow-lg border-neutral-200"
               >
-                <Link to='/pets-dashboard/settings' className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100">Profile</Link>
-                <Link to='/pets-dashboard/settings' className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100">Settings</Link>
+                <Link to='/pets-dashboard/profile' className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100">Profile</Link>
+                <Link to='/pets-dashboard/profile' className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100">Settings</Link>
                 <div className="my-1 border-t border-neutral-200"></div>
                 <button
                   onClick={handleLogout}

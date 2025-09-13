@@ -1,35 +1,36 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaHeart, FaBolt, FaHandshake, FaGlobe, FaBullseye, FaSyncAlt } from 'react-icons/fa';
 
 const ValuesSection = () => {
   const values = [
     {
-      icon: "❤️",
+      icon: <FaHeart className="text-red-500 w-8 h-8" />,
       title: "Compassion First",
       description: "Every decision we make is guided by our deep love and respect for animals."
     },
     {
-      icon: "⚡",
+      icon: <FaBolt className="text-yellow-500 w-8 h-8" />,
       title: "Innovation Driven",
       description: "We constantly push boundaries to create better solutions for pet care."
     },
     {
-      icon: "🤝",
+      icon: <FaHandshake className="text-blue-500 w-8 h-8" />,
       title: "Trust & Transparency",
       description: "We build relationships based on honesty, integrity, and open communication."
     },
     {
-      icon: "🌍",
+      icon: <FaGlobe className="text-green-500 w-8 h-8" />,
       title: "Community Impact",
       description: "We're committed to making a positive difference in the pet community."
     },
     {
-      icon: "🎯",
+      icon: <FaBullseye className="text-purple-500 w-8 h-8" />,
       title: "Excellence Always",
       description: "We strive for the highest standards in everything we do."
     },
     {
-      icon: "🔄",
+      icon: <FaSyncAlt className="text-teal-500 w-8 h-8" />,
       title: "Continuous Growth",
       description: "We learn, adapt, and evolve to serve pets and owners better."
     }

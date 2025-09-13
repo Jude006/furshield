@@ -8,7 +8,7 @@ import SocialNewsletterSection from '../components/contact/SocialNewsletterSecti
 
 const Contact = () => {
   return (
-     <div className='pt-16'>
+     <div className='pt-16 overflow-hidden'>
       <ContactBanner />
       <ContactFormSection />
       <TeamShowcase />

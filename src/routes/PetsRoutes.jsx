@@ -15,11 +15,12 @@ import Settings from "../pages/pets/Settings";
 import Notifications from "../pages/pets/Notifications";
 import ProductCatalog from "../pages/pets/ProductCatalog";
 import ProductDetails from "../pages/pets/ProductDetails";
+import ProductForm from "../pages/pets/ProductForm";
 
 const PetsRoutes = () => {
   return (
     <Routes>
-      <Route element={<DashboardLayout />}>
+      <Route element={<DashboardLayout />}>     
         <Route index element={<Dashboard />} />
         <Route path="/my-pets" element={<MyPets />} />
         <Route path="/add-pet" element={<AddPets />} />
@@ -30,9 +31,10 @@ const PetsRoutes = () => {
         <Route path="/products" element={<ProductCatalog />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/create" element={<ProductForm />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/care-tips" element={<CareTips />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<Settings />} />
         <Route path="/notifications" element={<Notifications />} />
       </Route>
     </Routes>

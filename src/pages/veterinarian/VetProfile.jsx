@@ -30,7 +30,7 @@ const VetProfile = () => {
     experience: '',
     licenseNumber: '',
   });
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   const api = axios.create({
     baseURL: API_BASE_URL,
@@ -47,27 +47,30 @@ const VetProfile = () => {
         const token = localStorage.getItem('token');
         if (!token) {
           toast.error('Please login to view profile');
-          navigate('/login');
+          navigate('/auth/login');
           return;
         }
 
+        console.log('Fetching profile for user...'); // Debug
         const userRes = await api.get('/api/users/me');
         const user = userRes.data.data;
+        console.log('Fetched user:', user); // Debug
         setFormData({
           firstName: user.firstName || '',
           lastName: user.lastName || '',
           email: user.email || '',
           contactNumber: user.contactNumber || '',
           address: user.address || '',
-          specialization: user.specialization || '',
-          experience: user.experience || '',
+          specialization: user.specialization || 'General', // Default to General
+          experience: user.experience?.toString() || '0', // Convert to string
           licenseNumber: user.licenseNumber || '',
         });
       } catch (err) {
+        console.error('Fetch profile error:', err.response?.data || err); // Debug
         if (err.response?.status === 401) {
           localStorage.removeItem('token');
           toast.error('Session expired. Please login again.');
-          navigate('/login');
+          navigate('/auth/login');
         } else {
           toast.error(err.response?.data?.error || 'Failed to load profile');
         }
@@ -91,15 +94,75 @@ const VetProfile = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Client-side validation
+    if (!formData.firstName.trim() || formData.firstName.length > 50) {
+      toast.error('First name is required and must be 50 characters or less');
+      setLoading(false);
+      return;
+    }
+    if (!formData.lastName.trim() || formData.lastName.length > 50) {
+      toast.error('Last name is required and must be 50 characters or less');
+      setLoading(false);
+      return;
+    }
+    if (!formData.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+      toast.error('Please provide a valid email address');
+      setLoading(false);
+      return;
+    }
+    if (!formData.contactNumber.trim()) {
+      toast.error('Phone number is required');
+      setLoading(false);
+      return;
+    }
+    if (!formData.address.trim()) {
+      toast.error('Address is required');
+      setLoading(false);
+      return;
+    }
+    if (!formData.specialization || formData.specialization === '') {
+      toast.error('Specialization is required');
+      setLoading(false);
+      return;
+    }
+    if (!formData.experience || isNaN(parseInt(formData.experience, 10)) || parseInt(formData.experience, 10) < 0) {
+      toast.error('Please provide a valid number for years of experience');
+      setLoading(false);
+      return;
+    }
+    if (!formData.licenseNumber.trim()) {
+      toast.error('License number is required');
+      setLoading(false);
+      return;
+    }
+
     try {
-      await api.put('/api/users/me', formData);
+      console.log('Submitting profile update:', {
+        ...formData,
+        experience: parseInt(formData.experience, 10),
+      }); // Debug
+      const response = await api.put('/api/users/me', {
+        ...formData,
+        experience: parseInt(formData.experience, 10),
+      });
+      console.log('Update response:', response.data); // Debug
       toast.success('Profile updated successfully');
+      setFormData({
+        ...formData,
+        ...response.data.data, // Update formData with server response
+        experience: response.data.data.experience?.toString() || '0',
+      });
       setEditing(false);
     } catch (err) {
+      console.error('Update profile error:', err.response?.data || err); // Debug
       if (err.response?.status === 401) {
         localStorage.removeItem('token');
         toast.error('Session expired. Please login again.');
-        navigate('/login');
+        navigate('/auth/login');
+      } else if (err.response?.status === 400 && err.response.data.errors) {
+        // Handle Mongoose validation errors
+        const validationErrors = err.response.data.errors.map((error) => error.msg).join(', ');
+        toast.error(validationErrors || 'Failed to update profile');
       } else {
         toast.error(err.response?.data?.error || 'Failed to update profile');
       }
@@ -209,6 +272,7 @@ const VetProfile = () => {
                     disabled={!editing}
                     className="w-full px-4 py-2 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
                     required
+                    maxLength={50}
                   />
                 </div>
                 <div>
@@ -221,6 +285,7 @@ const VetProfile = () => {
                     disabled={!editing}
                     className="w-full px-4 py-2 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
                     required
+                    maxLength={50}
                   />
                 </div>
                 <div>
@@ -249,6 +314,7 @@ const VetProfile = () => {
                       onChange={handleInputChange}
                       disabled={!editing}
                       className="w-full py-2 pl-10 pr-4 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
+                      required
                     />
                   </div>
                 </div>
@@ -263,6 +329,7 @@ const VetProfile = () => {
                       disabled={!editing}
                       rows={3}
                       className="w-full py-2 pl-10 pr-4 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
+                      required
                     />
                   </div>
                 </div>
@@ -285,6 +352,7 @@ const VetProfile = () => {
                       onChange={handleInputChange}
                       disabled={!editing}
                       className="w-full py-2 pl-10 pr-4 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
+                      required
                     />
                   </div>
                 </div>
@@ -298,6 +366,7 @@ const VetProfile = () => {
                     disabled={!editing}
                     min="0"
                     className="w-full px-4 py-2 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
+                    required
                   />
                 </div>
                 <div>
@@ -308,8 +377,9 @@ const VetProfile = () => {
                     onChange={handleInputChange}
                     disabled={!editing}
                     className="w-full px-4 py-2 font-sans border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-500"
+                    required
                   >
-                    <option value="">Select specialization</option>
+                    <option value="General">General</option>
                     <option value="Small Animal Surgery">Small Animal Surgery</option>
                     <option value="Dermatology">Dermatology</option>
                     <option value="Internal Medicine">Internal Medicine</option>

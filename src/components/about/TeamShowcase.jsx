@@ -5,7 +5,7 @@ const TeamShowcase = () => {
   const teamMembers = [
     {
       id: 1,
-      name: "Sarah Chen",
+      name: "John Kid",
       role: "Founder & CEO",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300",
       bio: "Former veterinary tech with 10+ years in pet care. Passionate about animal welfare.",
@@ -13,7 +13,7 @@ const TeamShowcase = () => {
     },
     {
       id: 2,
-      name: "Marcus Johnson",
+      name: "Seyi Tayo",
       role: "Lead Veterinarian",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300",
       bio: "DVM with 15 years experience. Specialized in emergency care and surgery.",
@@ -21,7 +21,7 @@ const TeamShowcase = () => {
     },
     {
       id: 3,
-      name: "Elena Rodriguez",
+      name: "Mary Chukwu",
       role: "Product Design",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300",
       bio: "UX designer focused on creating seamless pet care experiences.",
@@ -29,7 +29,7 @@ const TeamShowcase = () => {
     },
     {
       id: 4,
-      name: "David Kim",
+      name: "Sam Fire",
       role: "CTO",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300",
       bio: "Tech innovator building the future of pet care technology.",
@@ -37,7 +37,7 @@ const TeamShowcase = () => {
     },
     {
       id: 5,
-      name: "Amanda Wilson",
+      name: "Amanda Esther",
       role: "Head of Partnerships",
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=300",
       bio: "Connecting shelters and vets to create a comprehensive care network.",
@@ -45,7 +45,7 @@ const TeamShowcase = () => {
     },
     {
       id: 6,
-      name: "James Thompson",
+      name: "David  Ola",
       role: "Animal Behaviorist",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300",
       bio: "Certified behavior specialist ensuring pets' mental wellbeing.",

@@ -142,7 +142,6 @@ const BookAppointment = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Header */}
       <div className="bg-white border-b shadow-sm border-neutral-200">
         <div className="container px-4 py-4 mx-auto">
           <div className="flex items-center justify-between">
@@ -162,7 +161,6 @@ const BookAppointment = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container px-4 py-8 mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -188,7 +186,6 @@ const BookAppointment = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Pet Selection */}
                 <div>
                   <label className="block mb-2 text-sm font-medium text-neutral-700">
                     <FiHeart className="inline w-4 h-4 mr-1" />
@@ -210,7 +207,6 @@ const BookAppointment = () => {
                   </select>
                 </div>
 
-                {/* Veterinarian Selection */}
                 <div>
                   <label className="block mb-2 text-sm font-medium text-neutral-700">
                     <FiUser className="inline w-4 h-4 mr-1" />
@@ -233,7 +229,6 @@ const BookAppointment = () => {
                   </select>
                 </div>
 
-                {/* Date and Time */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-neutral-700">
@@ -273,7 +268,6 @@ const BookAppointment = () => {
                   </div>
                 </div>
 
-                {/* Reason and Symptoms */}
                 <div>
                   <label className="block mb-2 text-sm font-medium text-neutral-700">
                     Reason for Appointment

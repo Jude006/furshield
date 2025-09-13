@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { FiArrowLeft } from 'react-icons/fi';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -56,6 +57,18 @@ const Login = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
+            {/* Back to Home Button */}
+            <div className="mb-4">
+              <Link
+                to="/"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border rounded-lg shadow-sm hover:bg-neutral-100"
+              >
+                <FiArrowLeft className="w-4 h-4 mr-2" />
+                Back to Home
+              </Link>
+            </div>
+
+            {/* Logo + Heading */}
             <div className="mb-8 text-center">
               <Link to="/" className="inline-flex items-center">
                 <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,20 +77,16 @@ const Login = () => {
                 <span className="ml-2 text-2xl font-bold text-neutral-900 font-display">FurShield</span>
               </Link>
               <h1 className="mt-6 text-3xl font-bold text-neutral-900">Sign in to your account</h1>
-              <p className="mt-2 text-sm text-neutral-600">
-                Or{' '}
-                <Link to="/auth/signup" className="font-medium text-primary-600 hover:text-primary-500">
-                  create a new account
-                </Link>
-              </p>
             </div>
 
+            {/* Error Message */}
             {error && (
               <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
                 {error}
               </div>
             )}
 
+            {/* Login Form */}
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div>
@@ -92,7 +101,7 @@ const Login = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -108,7 +117,7 @@ const Login = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -148,10 +157,22 @@ const Login = () => {
                 </motion.button>
               </div>
             </form>
+
+            {/* Clear Sign Up Button */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-neutral-700">Don't have an account?</p>
+              <Link
+                to="/auth/signup"
+                className="inline-block w-full px-4 py-3 mt-3 text-sm font-medium text-center text-primary-600 bg-white border rounded-lg shadow-sm hover:bg-neutral-100"
+              >
+                Create a new account
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>
 
+      {/* Right Side Design */}
       <div className="relative flex-1 hidden w-0 lg:block">
         <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600 opacity-90"></div>
         <div className="absolute inset-0 flex items-center justify-center p-12">

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "name": "Buddy",
+    "species": "Dog",
+    "breed": "Golden Retriever",
+    "age": "2",
+    "ageCategory": "young",
+    "location": "New York, NY",
+    "image": "/images/pets1.avif",
+    "gender": "Male",
+    "size": "Large"
+  },
+  {
+    "id": "2",
+    "name": "Luna",
+    "species": "Cat",
+    "breed": "Siamese",
+    "age": "1",
+    "ageCategory": "young",
+    "location": "Los Angeles, CA",
+    "image": "/images/pets2.avif",
+    "gender": "Female",
+    "size": "Small"
+  },
+  {
+    "id": "3",
+    "name": "Charlie",
+    "species": "Dog",
+    "breed": "Beagle",
+    "age": "3",
+    "ageCategory": "young",
+    "location": "Chicago, IL",
+    "image": "/images/pet3.avif",
+    "gender": "Male",
+    "size": "Medium"
+  },
+  {
+    "id": "4",
+    "name": "Daisy",
+    "species": "Bird",
+    "breed": "Parakeet",
+    "age": "0.5",
+    "ageCategory": "puppy",
+    "location": "Miami, FL",
+    "image": "/images/pet4.avif",
+    "gender": "Female",
+    "size": "Small"
+  },
+  {
+    "id": "5",
+    "name": "Max",
+    "species": "Dog",
+    "breed": "Labrador",
+    "age": "5",
+    "ageCategory": "adult",
+    "location": "Austin, TX",
+    "image": "/images/pet5.avif",
+    "gender": "Male",
+    "size": "Large"
+  },
+  {
+    "id": "6",
+    "name": "Bella",
+    "species": "Cat",
+    "breed": "Maine Coon",
+    "age": "4",
+    "ageCategory": "adult",
+    "location": "Seattle, WA",
+    "image": "/images/pet6.avif",
+    "gender": "Female",
+    "size": "Medium"
+  },
+  {
+    "id": "7",
+    "name": "Rocky",
+    "species": "Dog",
+    "breed": "Bulldog",
+    "age": "8",
+    "ageCategory": "senior",
+    "location": "Boston, MA",
+    "image": "/images/pet7.avif",
+    "gender": "Male",
+    "size": "Medium"
+  },
+  {
+    "id": "8",
+    "name": "Coco",
+    "species": "Rabbit",
+    "breed": "Holland Lop",
+    "age": "2",
+    "ageCategory": "young",
+    "location": "Denver, CO",
+    "image": "/images/pet8.avif",
+    "gender": "Female",
+    "size": "Small"
+  }
+]

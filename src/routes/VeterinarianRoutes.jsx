@@ -20,7 +20,8 @@ const VeterinarianRoutes = () => {
         <Route path="appointments" element={<MyAppointments />} />
         <Route path="appointment-history" element={<AppointmentHistory />} />
         <Route path="patient-records" element={<PatientRecords />} />
-        <Route path="treatment-logs" element={<TreatmentLogs />} />
+        <Route path="patient-records/:petId" element={<PatientRecords />} />
+      <Route path="treatment-logs/:appointmentId" element={<TreatmentLogs />} />
         <Route path="availability" element={<AvailabilitySchedule />} />
         <Route path="profile" element={<VetProfile />} />
         <Route path="settings" element={<Settings />} />

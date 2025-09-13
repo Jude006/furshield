@@ -27,7 +27,7 @@ const Footer = () => {
               <li><Link to="/about" className="transition-colors hover:text-white">About Us</Link></li>
               <li><Link to="/services" className="transition-colors hover:text-white">Services</Link></li>
               <li><Link to="/contact" className="transition-colors hover:text-white">Contact</Link></li>
-              <li><Link to="/faq" className="transition-colors hover:text-white">FAQ</Link></li>
+              <li><Link to="/contact" className="transition-colors hover:text-white">FAQ</Link></li>
             </ul>
           </div>
 
@@ -46,7 +46,7 @@ const Footer = () => {
             <div className="space-y-2 text-neutral-400">
               <p>Email: furshield123@gmail.com</p>
               <p>Phone: (+234) 8068078495</p>
-              <p>Address: 123 Sango ota ogun state</p>
+              <p>Address: 13 Aptech Ota ogun state Nigeria</p>
             </div>
           </div>
         </div>

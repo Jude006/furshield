@@ -54,7 +54,7 @@ const ServicesBanner = () => {
           </p>
         </motion.div>
 
-        {/* Service Icons Grid */}
+      {/* my service grid box section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,14 +69,16 @@ const ServicesBanner = () => {
             { icon: FaShoppingBasket, label: "Products", color: "text-yellow-400" },
             { icon: FaUsers, label: "Community", color: "text-purple-400" }
           ].map((service, index) => (
+           <a href='#service' key={index}>
             <motion.div
-              key={index}
+              
               whileHover={{ scale: 1.05, y: -5 }}
               className="p-4 transition-all duration-300 border bg-white/5 rounded-xl backdrop-blur-sm border-white/10 hover:bg-white/10"
             >
               <service.icon className={`w-8 h-8 mx-auto mb-2 ${service.color}`} />
               <span className="text-sm font-medium text-white">{service.label}</span>
             </motion.div>
+           </a>
           ))}
         </motion.div>
 

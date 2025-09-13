@@ -167,7 +167,6 @@ const VeterinariansDirectory = () => {
           </p>
         </motion.div>
 
-        {/* Search and Filters */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -251,7 +250,7 @@ const VeterinariansDirectory = () => {
                 <img
                   src={vet.image}
                   alt={vet.name}
-                  className="object-cover w-full h-48"
+                  className="object-cover w-full h-48 object-top"
                 />
                 <div className="absolute top-4 right-4">
                   <span className="px-3 py-1 text-sm font-medium text-white rounded-full bg-primary-500">
@@ -261,7 +260,7 @@ const VeterinariansDirectory = () => {
               </div>
 
               <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start justify-between mb-2">
                   <div>
                     <h3 className="text-xl font-semibold text-neutral-900 font-display">
                       {vet.name}
@@ -333,7 +332,6 @@ const VeterinariansDirectory = () => {
                   </div>
                 </div>
 
-                {/* Services */}
                 <div className="mt-4">
                   <h4 className="mb-2 text-sm font-medium text-neutral-900">
                     Services:
@@ -374,7 +372,6 @@ const VeterinariansDirectory = () => {
           ))}
         </motion.div>
 
-        {/* Empty State */}
         {filteredVets.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -414,7 +411,6 @@ const VeterinariansDirectory = () => {
           </motion.div>
         )}
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -432,7 +428,7 @@ const VeterinariansDirectory = () => {
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link
-                to="/auth/register?role=veterinarian"
+                to="/auth/signup"
                 className="px-8 py-4 font-semibold text-white transition-colors duration-300 rounded-lg bg-primary-500 hover:bg-primary-600"
               >
                 Join as Veterinarian

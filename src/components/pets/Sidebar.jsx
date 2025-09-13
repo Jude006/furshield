@@ -13,7 +13,6 @@ import {
   FiPackage,
   FiBookOpen,
   FiBell,
-  FiSettings,
   FiUser,
   FiLogOut
 } from 'react-icons/fi';
@@ -29,7 +28,7 @@ const Sidebar = ({ setShowSideBar }) => {
     if (window.confirm('Are you sure you want to sign out?')) {
       logout();
       toast.success('Successfully signed out');
-      navigate('/login');
+      navigate('/auth/login');
     }
   };
 
@@ -45,23 +44,22 @@ const Sidebar = ({ setShowSideBar }) => {
     { path: '/pets-dashboard/orders', icon: FiPackage, label: 'Orders' },
     { path: '/pets-dashboard/care-tips', icon: FiBookOpen, label: 'Care Tips' },
     { path: '/pets-dashboard/notifications', icon: FiBell, label: 'Notifications' },
-    { path: '/pets-dashboard/settings', icon: FiSettings, label: 'Settings' },
+    { path: '/pets-dashboard/profile', icon: FiUser, label: 'Profile' },
   ];
 
   return (
     <div className="flex flex-col h-full bg-white border-r w-80 border-neutral-200">
-      <div className="p-6 border-b border-neutral-200">
+      <div className="p-4 border-b border-neutral-200">
         <Link to="/" className="flex items-center space-x-3">
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-primary-600 to-secondary-600">
             <FiHeart className="w-5 h-5 text-white" />
           </div>
           <div>
             <span className="text-xl font-bold text-neutral-800 font-display">FurShield</span>
-            <p className="text-xs text-neutral-500">Pet Care Platform</p>
+            <p className="text-xs text-neutral-500 py-[2px]">Pet Care Platform</p>
           </div>
         </Link>
       </div>
-
       <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto font-sans">
         {menuItems.map((item, index) => {
           const IconComponent = item.icon;
@@ -105,7 +103,7 @@ const Sidebar = ({ setShowSideBar }) => {
       </nav>
 
       <div className="p-4 border-t border-neutral-200">
-        <div className="flex items-center px-4 py-3 mb-2 transition-colors duration-200 rounded-lg hover:bg-neutral-50">
+        <Link to='/pets-dashboard/profile' className="flex items-center px-4 py-3 mb-2 transition-colors duration-200 rounded-lg hover:bg-neutral-50">
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-primary-100 to-secondary-100">
             <FiUser className="w-5 h-5 text-primary-600" />
           </div>
@@ -117,7 +115,7 @@ const Sidebar = ({ setShowSideBar }) => {
               {user ? user.userType.charAt(0).toUpperCase() + user.userType.slice(1) : 'Pet Owner'}
             </p>
           </div>
-        </div>
+        </Link>
         
         <button
           onClick={handleLogout}

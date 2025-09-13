@@ -11,7 +11,7 @@ const About = () => {
   return (
     <div className='pt-16'>
     <AboutBanner />
-    <OurStory />
+    <OurStory /> 
     <TeamShowcase />
     <ValuesSection />
     <AchievementsSection />

@@ -27,7 +27,7 @@ const VetDashboardNav = ({ setShowSideBar, showSideBar, stats }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     toast.success("Logged out successfully");
-    navigate("/login");
+    navigate("/auth/login");
   };
 
   return (

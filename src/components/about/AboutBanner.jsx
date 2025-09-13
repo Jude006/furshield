@@ -43,7 +43,7 @@ const AboutBanner = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex justify-center mb-8"
           >
-            <div className="flex items-center space-x-3 text-sm text-white/80">
+            <div className="flex items-center space-x-3 text-sm text-white/80 md:mt-0 mt-10">
               <Link to="/" className="transition-colors hover:text-white">
                 Home
               </Link>
@@ -52,7 +52,6 @@ const AboutBanner = () => {
             </div>
           </motion.nav>
 
-          {/* Main Headline */}
           <div className="mb-8">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -138,8 +137,8 @@ const AboutBanner = () => {
               />
             </Link>
             
-            <Link
-              to="/story"
+            <a href='#story'
+              
               className="flex items-center px-6 py-3 font-medium text-white transition-all duration-300 border rounded-full hover:text-primary-200 group border-white/30 hover:border-primary-300"
             >
               <span>Our Story</span>
@@ -151,7 +150,7 @@ const AboutBanner = () => {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </motion.svg>
-            </Link>
+            </a>
           </motion.div>
         </motion.div>
       </div>

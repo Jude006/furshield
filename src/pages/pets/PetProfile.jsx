@@ -23,7 +23,6 @@ import {
   FaUserMd,
 } from 'react-icons/fa';
 
-// InfoCard Component
 const InfoCard = ({ icon: Icon, label, value }) => (
   <div className="flex items-center p-3 space-x-3 rounded-lg bg-gray-50">
     <Icon className="text-xl text-primary-600" />
@@ -34,14 +33,12 @@ const InfoCard = ({ icon: Icon, label, value }) => (
   </div>
 );
 
-// LoadingSpinner Component
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center h-screen bg-gray-50">
     <div className="w-12 h-12 border-t-2 border-b-2 rounded-full animate-spin border-primary-600"></div>
   </div>
 );
 
-// ErrorDisplay Component
 const ErrorDisplay = ({ error, navigate }) => (
   <div className="flex items-center justify-center h-screen bg-gray-50">
     <div className="text-center">
@@ -57,7 +54,6 @@ const ErrorDisplay = ({ error, navigate }) => (
   </div>
 );
 
-// NotFound Component
 const NotFound = ({ navigate }) => (
   <div className="flex items-center justify-center h-screen bg-gray-50">
     <div className="text-center">
@@ -73,7 +69,6 @@ const NotFound = ({ navigate }) => (
   </div>
 );
 
-// OverviewTab Component
 const OverviewTab = ({ pet }) => (
   <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
     <h2 className="mb-4 text-xl font-semibold text-gray-900">Overview</h2>
@@ -98,7 +93,6 @@ const OverviewTab = ({ pet }) => (
   </div>
 );
 
-// MedicalTab Component
 const MedicalTab = ({ pet, api, setPet }) => {
   const [medicalRecord, setMedicalRecord] = useState({ condition: '', diagnosis: '', treatment: '', date: '' });
   const [loading, setLoading] = useState(false);
@@ -245,7 +239,6 @@ const MedicalTab = ({ pet, api, setPet }) => {
   );
 };
 
-// VaccinationsTab Component
 const VaccinationsTab = ({ pet, api, setPet }) => {
   const [vaccination, setVaccination] = useState({ vaccine: '', date: '', nextDue: '' });
   const [loading, setLoading] = useState(false);
@@ -382,7 +375,6 @@ const VaccinationsTab = ({ pet, api, setPet }) => {
   );
 };
 
-// AppointmentsTab Component
 const AppointmentsTab = ({ timeline }) => (
   <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
     <h2 className="mb-4 text-xl font-semibold text-gray-900">Appointments</h2>
@@ -421,7 +413,6 @@ const AppointmentsTab = ({ timeline }) => (
   </div>
 );
 
-// DocumentsTab Component
 const DocumentsTab = ({ pet, apiMultipart, setPet }) => {
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -530,7 +521,6 @@ const DocumentsTab = ({ pet, apiMultipart, setPet }) => {
   );
 };
 
-// TimelineTab Component
 const TimelineTab = ({ timeline }) => (
   <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
     <h2 className="mb-4 text-xl font-semibold text-gray-900">Timeline</h2>
@@ -582,7 +572,6 @@ const TimelineTab = ({ timeline }) => (
   </div>
 );
 
-// Main PetProfile Component
 const PetProfile = () => {
   const { petId } = useParams();
   const navigate = useNavigate();
@@ -648,7 +637,6 @@ const PetProfile = () => {
           return;
         }
 
-        // Fetch pet details
         const petResponse = await api.get(`/api/pets/${petId}`);
         const petData = petResponse.data.data || petResponse.data;
         if (!petData) {
@@ -666,7 +654,6 @@ const PetProfile = () => {
           birthDate: petData.birthDate ? petData.birthDate.split('T')[0] : '',
         });
 
-        // Fetch timeline
         const timelineResponse = await api.get(`/api/pets/${petId}/timeline`);
         setTimeline(timelineResponse.data.data);
       } catch (err) {
@@ -725,7 +712,6 @@ const PetProfile = () => {
     }
   };
 
-  // Loading and error states
   if (loading && !pet) return <LoadingSpinner />;
   if (error) return <ErrorDisplay error={error} navigate={navigate} />;
   if (!pet) return <NotFound navigate={navigate} />;
@@ -733,7 +719,6 @@ const PetProfile = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container p-4 mx-auto">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
             <button
@@ -760,7 +745,6 @@ const PetProfile = () => {
           </div>
         </div>
 
-        {/* Tab Navigation */}
         <div className="mb-6 bg-white border border-gray-200 rounded-lg shadow-sm">
           <nav className="flex px-6 space-x-8">
             {['overview', 'medical', 'vaccinations', 'appointments', 'documents', 'timeline'].map((tab) => (
@@ -779,9 +763,7 @@ const PetProfile = () => {
           </nav>
         </div>
 
-        {/* Tab Content */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Main Content */}
           <div className="lg:col-span-2">
             {activeTab === 'overview' && (
               <div className="space-y-6">
@@ -934,9 +916,7 @@ const PetProfile = () => {
             {activeTab === 'timeline' && <TimelineTab timeline={timeline} />}
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Stats */}
             <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
               <h3 className="mb-4 font-semibold text-gray-900">Health Summary</h3>
               <div className="space-y-3">
@@ -961,7 +941,6 @@ const PetProfile = () => {
               </div>
             </div>
 
-            {/* Upcoming Reminders */}
             <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
               <h3 className="mb-4 font-semibold text-gray-900">Upcoming</h3>
               {pet.vaccinations?.filter((v) => new Date(v.nextDue) > new Date()).length > 0 ? (
@@ -983,7 +962,6 @@ const PetProfile = () => {
               )}s
             </div>
 
-            {/* Allergies */}
             <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
               <h3 className="mb-4 font-semibold text-gray-900">Allergies</h3>
               {pet.allergies?.length > 0 ? (

@@ -11,45 +11,42 @@ const ProductCatalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(true);
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-  const api = axios.create({
-    baseURL: API_BASE_URL,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         const query = category ? `?category=${category}` : '';
-        const productsRes = await api.get(`/api/products${query}`);
+        const productsRes = await axios.get(`${API_BASE_URL}/api/products${query}`);
+        console.log('Fetched products:', productsRes.data.data); // Debug log
         setProducts(productsRes.data.data);
       } catch (err) {
         console.error('Fetch products error:', err);
-        if (err.response?.status === 401 || err.response?.status === 403) {
-          localStorage.removeItem('token');
-          toast.error('Session expired or unauthorized. Please login again.');
-          navigate('/login');
-        } else {
-          toast.error(err.response?.data?.error || 'Failed to load products');
-        }
+        toast.error(err.response?.data?.error || 'Failed to load products');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [category, navigate]);
+  }, [category]);
 
   const handleAddToCart = async (productId) => {
     try {
-      const cartRes = await api.post('/api/orders', { productId, quantity: 1 });
+      const token = localStorage.getItem('token');
+      if (!token) {
+        toast.error('Please login to add to cart');
+        navigate('/auth/login');
+        return;
+      }
+      const cartRes = await axios.post(
+        `${API_BASE_URL}/api/orders`,
+        { productId, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       toast.success('Product added to cart');
-      return cartRes.data.data; // Return updated cart for potential state update
+      return cartRes.data.data;
     } catch (err) {
       console.error('Add to cart error:', err);
       toast.error(err.response?.data?.error || 'Failed to add to cart');
@@ -137,10 +134,10 @@ const ProductCatalog = () => {
                       className="overflow-hidden bg-white border shadow-sm rounded-xl border-neutral-200 hover:shadow-md"
                     >
                       <img
-                        src={product.image}
+                        src={product.images[0] || 'https://via.placeholder.com/300'}
                         alt={product.name}
-                        className="object-cover w-full h-48 cursor-pointer"
-                        onClick={() => navigate(`/products/${product._id}`)}
+                        className="object-cover object-top  w-full h-48 cursor-pointer"
+                        onClick={() => navigate(`/pets-dashboard/products/${product._id}`)}
                       />
                       <div className="p-4">
                         <h3 className="font-sans text-lg font-semibold text-neutral-900">{product.name}</h3>

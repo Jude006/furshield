@@ -36,7 +36,7 @@ const VetSidebar = ({ setShowSideBar }) => {
       setIsLoggingOut(true);
       await logout();
       toast.success('Logged out successfully');
-      navigate('/login');
+      navigate('/auth/login');
     } catch (error) {
       toast.error('Failed to logout. Please try again.');
     } finally {

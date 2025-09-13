@@ -57,11 +57,9 @@ const Dashboard = () => {
         setAppointments(appointmentsRes.data.data);
         setCart(cartRes.data.data);
 
-        // Generate health alerts from pets data
         const alerts = petsRes.data.data.flatMap(pet => {
           const petAlerts = [];
           
-          // Check for upcoming vaccinations
           pet.vaccinations.forEach(vaccination => {
             if (vaccination.nextDue && new Date(vaccination.nextDue) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) {
               petAlerts.push({
@@ -75,7 +73,6 @@ const Dashboard = () => {
             }
           });
 
-          // Check for medical conditions that need follow-up
           pet.medicalHistory.forEach(record => {
             if (record.followUpRequired && record.followUpDate && new Date(record.followUpDate) <= new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)) {
               petAlerts.push({
@@ -170,7 +167,6 @@ const Dashboard = () => {
     cartItems: cart?.items?.length || 0,
   };
 
-  // Get upcoming appointments (next 7 days)
   const upcomingAppointments = appointments
     .filter(appt => 
       ['scheduled', 'confirmed'].includes(appt.status) && 
@@ -182,7 +178,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Header */}
       <div className="bg-white border-b shadow-sm border-neutral-200">
         <div className="container px-4 py-4 mx-auto">
           <div className="flex items-center justify-between">
@@ -195,7 +190,6 @@ const Dashboard = () => {
               </p>
             </div>
             
-            {/* Search Bar */}
             <form onSubmit={handleSearch} className="relative w-64">
               <input
                 type="text"
@@ -210,9 +204,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container px-4 py-8 mx-auto">
-        {/* Quick Stats */}
         <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { 
@@ -264,9 +256,7 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Left Column - Pets and Appointments */}
           <div className="space-y-8 lg:col-span-2">
-            {/* My Pets Section */}
             <div className="p-6 bg-white border shadow-sm rounded-xl border-neutral-200">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-neutral-900">My Pets</h2>
@@ -341,7 +331,6 @@ const Dashboard = () => {
               )}
             </div>
 
-            {/* Upcoming Appointments Section */}
             <div className="p-6 bg-white border shadow-sm rounded-xl border-neutral-200">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-neutral-900">Upcoming Appointments</h2>
@@ -414,9 +403,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Right Column - Health Alerts and Quick Actions */}
           <div className="space-y-8">
-            {/* Health Alerts Section */}
             <div className="p-6 bg-white border shadow-sm rounded-xl border-neutral-200">
               <h2 className="mb-6 text-xl font-bold text-neutral-900">Health Alerts</h2>
               
@@ -459,7 +446,6 @@ const Dashboard = () => {
               )}
             </div>
 
-            {/* Quick Actions Section */}
             <div className="p-6 bg-white border shadow-sm rounded-xl border-neutral-200">
               <h2 className="mb-6 text-xl font-bold text-neutral-900">Quick Actions</h2>
               <div className="grid grid-cols-2 gap-3">

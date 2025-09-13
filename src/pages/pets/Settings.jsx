@@ -44,7 +44,7 @@ const Settings = () => {
 
     try {
       const updateData = { ...formData };
-      if (!updateData.password) delete updateData.password; // Don't update password if empty
+      if (!updateData.password) delete updateData.password; 
       const result = await updateUser(updateData);
       if (result.success) {
         toast.success('Profile updated successfully');
@@ -184,6 +184,8 @@ const Settings = () => {
           </div>
         </main>
       </div>
+
+      
     </div>
   );
 };
