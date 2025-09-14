@@ -93,8 +93,7 @@ const Login = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Back to Home Button */}
-            <div className="mb-4">
+            <div className="mb-4 md:flex-row flex-wrap gap-2 justify-start">
               <Link
                 to="/"
                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border rounded-lg shadow-sm hover:bg-neutral-100"
@@ -104,7 +103,6 @@ const Login = () => {
               </Link>
             </div>
 
-            {/* Logo + Heading */}
             <div className="mb-8 text-center">
               <Link to="/" className="inline-flex items-center">
                 <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

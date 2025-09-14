@@ -26,7 +26,7 @@ const ShoppingCart = () => {
         const token = localStorage.getItem('token');
         if (!token) {
           toast.error('Please login to view cart');
-          navigate('/login');
+          navigate('/auth/login');
           return;
         }
 
@@ -37,7 +37,7 @@ const ShoppingCart = () => {
         if (err.response?.status === 401 || err.response?.status === 403) {
           localStorage.removeItem('token');
           toast.error('Session expired or unauthorized. Please login again.');
-          navigate('/login');
+          navigate('/auth/login');
         } else {
           toast.error(err.response?.data?.error || 'Failed to load cart');
         }
@@ -53,7 +53,7 @@ const ShoppingCart = () => {
     try {
       const item = cart.items.find(i => i.product._id === productId);
       const newQuantity = item.quantity + change;
-      if (newQuantity < 1) return; // Use remove for 0
+      if (newQuantity < 1) return; 
 
       const updatedCart = await api.put('/api/orders/cart/update', { productId, quantity: newQuantity });
       setCart(updatedCart.data.data);
@@ -160,12 +160,12 @@ const ShoppingCart = () => {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <img
+                          {/* <img
                             src={item.product.image}
                             alt={item.product.name}
                             className="object-cover w-16 h-16 mr-4 rounded-lg cursor-pointer"
                             onClick={() => navigate(`/products/${item.product._id}`)}
-                          />
+                          /> */}
                           <div>
                             <p
                               className="font-sans text-sm font-medium cursor-pointer text-neutral-900 hover:text-primary-600"
