@@ -11,9 +11,32 @@ const Login = () => {
     rememberMe: false
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   
   const { login, error, clearError } = useAuth();
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,11 +45,24 @@ const Login = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
     
+    // Clear specific error when user types
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+    
     if (error) clearError();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setIsLoading(true);
     
     const result = await login(formData.email, formData.password);
@@ -101,9 +137,14 @@ const Login = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    className={`relative block w-full px-4 py-3 border rounded-lg appearance-none placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                      errors.email ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                    }`}
                     placeholder="Enter your email"
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="password" className="block mb-1 text-sm font-medium text-neutral-700">
@@ -117,9 +158,14 @@ const Login = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg appearance-none border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    className={`relative block w-full px-4 py-3 border rounded-lg appearance-none placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                      errors.password ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                    }`}
                     placeholder="Enter your password"
                   />
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                  )}
                 </div>
               </div>
 

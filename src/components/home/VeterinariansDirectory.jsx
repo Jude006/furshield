@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { FiSearch, FiX } from "react-icons/fi";
+import { debounce } from "lodash";
 
 const VeterinariansDirectory = () => {
   const [filters, setFilters] = useState({
@@ -10,6 +12,8 @@ const VeterinariansDirectory = () => {
     experience: "",
     search: "",
   });
+  const [filteredVets, setFilteredVets] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const veterinarians = [
     {
@@ -102,25 +106,69 @@ const VeterinariansDirectory = () => {
     },
   ];
 
-  const filteredVets = veterinarians.filter((vet) => {
-    return Object.entries(filters).every(([key, value]) => {
-      if (!value) return true;
+  // Check authentication status
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
 
-      if (key === "search") {
-        const searchTerm = value.toLowerCase();
-        return (
+  // Apply filters
+  useEffect(() => {
+    let result = [...veterinarians];
+
+    if (filters.specialty) {
+      result = result.filter((vet) =>
+        vet.specialty.toLowerCase() === filters.specialty.toLowerCase()
+      );
+    }
+
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      result = result.filter(
+        (vet) =>
           vet.name.toLowerCase().includes(searchTerm) ||
           vet.specialty.toLowerCase().includes(searchTerm) ||
           vet.location.toLowerCase().includes(searchTerm) ||
           vet.services.some((service) =>
             service.toLowerCase().includes(searchTerm)
           )
-        );
-      }
+      );
+    }
 
-      return vet[key]?.toString().toLowerCase().includes(value.toLowerCase());
+    if (filters.rating) {
+      const minRating = parseFloat(filters.rating);
+      result = result.filter((vet) => vet.rating >= minRating);
+    }
+
+    if (filters.experience) {
+      result = result.filter((vet) => {
+        const years = parseInt(vet.experience);
+        const [min, max] = filters.experience
+          .split("-")
+          .map((v) => parseInt(v) || Infinity);
+        return years >= min && (max ? years <= max : true);
+      });
+    }
+
+    setFilteredVets(result);
+  }, [filters]);
+
+  const debouncedHandleFilterChange = useCallback(
+    debounce((key, value) => {
+      setFilters((prev) => ({ ...prev, [key]: value }));
+    }, 300),
+    []
+  );
+
+  const clearFilters = () => {
+    setFilters({
+      specialty: "",
+      availability: "",
+      rating: "",
+      experience: "",
+      search: "",
     });
-  });
+  };
 
   const specialties = [...new Set(veterinarians.map((vet) => vet.specialty))];
   const experiences = ["1-5 years", "6-10 years", "11-15 years", "16+ years"];
@@ -147,10 +195,131 @@ const VeterinariansDirectory = () => {
     },
   };
 
+  const VetCard = React.memo(({ vet }) => (
+    <motion.div
+      variants={itemVariants}
+      className="overflow-hidden transition-all duration-300 bg-white shadow-md rounded-2xl hover:shadow-xl group"
+    >
+      <div className="relative">
+        <img
+          src={vet.image}
+          alt={vet.name}
+          className="object-cover w-full h-48 object-top"
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = "https://via.placeholder.com/300";
+          }}
+        />
+        <div className="absolute top-4 right-4">
+          <span className="px-3 py-1 text-sm font-medium text-white rounded-full bg-primary-500">
+            {vet.specialty}
+          </span>
+        </div>
+      </div>
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-2">
+          <div>
+            <h3 className="text-xl font-semibold text-neutral-900 font-display">
+              {vet.name}
+            </h3>
+            <p className="text-primary-600">{vet.specialty}</p>
+          </div>
+          <div className="flex items-center">
+            <span className="text-yellow-400">★</span>
+            <span className="ml-1 font-medium">{vet.rating}</span>
+          </div>
+        </div>
+        <div className="space-y-3 text-sm text-neutral-600">
+          <div className="flex items-center">
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            {vet.location}
+          </div>
+          <div className="flex items-center">
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            {vet.availability}
+          </div>
+          <div className="flex items-center">
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 002 2h2a2 2 0 002-2V6m0 0v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6"
+              />
+            </svg>
+            {vet.experience} experience
+          </div>
+        </div>
+        <div className="mt-4">
+          <h4 className="mb-2 text-sm font-medium text-neutral-900">
+            Services:
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {vet.services.slice(0, 3).map((service, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 text-xs rounded bg-neutral-100 text-neutral-600"
+              >
+                {service}
+              </span>
+            ))}
+            {vet.services.length > 3 && (
+              <span className="px-2 py-1 text-xs rounded bg-neutral-100 text-neutral-600">
+                +{vet.services.length - 3} more
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="mt-6">
+          <Link
+            to={isAuthenticated ? "/pets-dashboard/book-appointment" : "/auth/register"}
+            className="block w-full px-4 py-3 font-medium text-center text-white transition-colors duration-300 rounded-lg bg-primary-500 hover:bg-primary-600"
+          >
+            Book Appointment
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  ));
+
   return (
     <section className="py-20 bg-neutral-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -162,8 +331,7 @@ const VeterinariansDirectory = () => {
             Expert <span className="text-primary-600">Veterinarians</span>
           </h2>
           <p className="max-w-2xl mx-auto mt-4 text-lg text-neutral-600 md:text-xl">
-            Connect with experienced veterinary professionals for your pet's
-            care
+            Connect with experienced veterinary professionals for your pet's care
           </p>
         </motion.div>
 
@@ -174,24 +342,41 @@ const VeterinariansDirectory = () => {
           transition={{ duration: 0.6 }}
           className="p-6 mb-8 bg-white border shadow-sm rounded-2xl border-neutral-200"
         >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-neutral-900">Filters</h3>
+            {(filters.specialty || filters.rating || filters.experience || filters.search) && (
+              <button
+                onClick={clearFilters}
+                className="text-sm text-primary-600 hover:text-primary-700"
+              >
+                Clear All
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
             <div className="lg:col-span-2">
-              <input
-                type="text"
-                placeholder="Search veterinarians, specialties, locations..."
-                value={filters.search}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, search: e.target.value }))
-                }
-                className="w-full px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
+              <div className="relative">
+                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" />
+                <input
+                  type="text"
+                  placeholder="Search veterinarians, specialties, locations..."
+                  value={filters.search}
+                  onChange={(e) => debouncedHandleFilterChange("search", e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+                {filters.search && (
+                  <button
+                    onClick={() => debouncedHandleFilterChange("search", "")}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+                  >
+                    <FiX size={16} />
+                  </button>
+                )}
+              </div>
             </div>
-
             <select
               value={filters.specialty}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, specialty: e.target.value }))
-              }
+              onChange={(e) => debouncedHandleFilterChange("specialty", e.target.value)}
               className="px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               <option value="">All Specialties</option>
@@ -201,12 +386,9 @@ const VeterinariansDirectory = () => {
                 </option>
               ))}
             </select>
-
             <select
               value={filters.experience}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, experience: e.target.value }))
-              }
+              onChange={(e) => debouncedHandleFilterChange("experience", e.target.value)}
               className="px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               <option value="">Any Experience</option>
@@ -216,12 +398,9 @@ const VeterinariansDirectory = () => {
                 </option>
               ))}
             </select>
-
             <select
               value={filters.rating}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, rating: e.target.value }))
-              }
+              onChange={(e) => debouncedHandleFilterChange("rating", e.target.value)}
               className="px-4 py-3 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               <option value="">Any Rating</option>
@@ -232,143 +411,14 @@ const VeterinariansDirectory = () => {
           </div>
         </motion.div>
 
-        {/* Veterinarians Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          animate="visible"
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {filteredVets.map((vet) => (
-            <motion.div
-              key={vet.id}
-              variants={itemVariants}
-              className="overflow-hidden transition-all duration-300 bg-white shadow-md rounded-2xl hover:shadow-xl group"
-            >
-              <div className="relative">
-                <img
-                  src={vet.image}
-                  alt={vet.name}
-                  className="object-cover w-full h-48 object-top"
-                />
-                <div className="absolute top-4 right-4">
-                  <span className="px-3 py-1 text-sm font-medium text-white rounded-full bg-primary-500">
-                    {vet.specialty}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h3 className="text-xl font-semibold text-neutral-900 font-display">
-                      {vet.name}
-                    </h3>
-                    <p className="text-primary-600">{vet.specialty}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-yellow-400">★</span>
-                    <span className="ml-1 font-medium">{vet.rating}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-3 text-sm text-neutral-600">
-                  <div className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    {vet.location}
-                  </div>
-
-                  <div className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    {vet.availability}
-                  </div>
-
-                  <div className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 002 2h2a2 2 0 002-2V6m0 0v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6"
-                      />
-                    </svg>
-                    {vet.experience} experience
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <h4 className="mb-2 text-sm font-medium text-neutral-900">
-                    Services:
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {vet.services.slice(0, 3).map((service, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 text-xs rounded bg-neutral-100 text-neutral-600"
-                      >
-                        {service}
-                      </span>
-                    ))}
-                    {vet.services.length > 3 && (
-                      <span className="px-2 py-1 text-xs rounded bg-neutral-100 text-neutral-600">
-                        +{vet.services.length - 3} more
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mt-6 space-y-3">
-                  <Link
-                    to="/auth/register"
-                    className="block w-full px-4 py-3 font-medium text-center text-white transition-colors duration-300 rounded-lg bg-primary-500 hover:bg-primary-600"
-                  >
-                    Book Appointment
-                  </Link>
-                  <Link
-                    to={`/veterinarians/${vet.id}`}
-                    className="block w-full px-4 py-2 text-center transition-colors duration-300 border rounded-lg text-primary-600 border-primary-500 hover:bg-primary-50"
-                  >
-                    View Profile
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+            <VetCard key={vet.id} vet={vet} />
           ))}
         </motion.div>
 
@@ -376,37 +426,20 @@ const VeterinariansDirectory = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-12 mt-8 text-center bg-white border rounded-2xl border-neutral-200"
+            className="p-8 text-center bg-white border shadow-sm rounded-2xl border-neutral-200"
           >
-            <div className="w-20 h-20 mx-auto mb-6 text-neutral-400">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47.87-6.09 2.29M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                />
-              </svg>
-            </div>
-            <h3 className="mb-2 text-xl font-semibold text-neutral-900">
+            <FiSearch size={48} className="mx-auto mb-4 text-neutral-400" />
+            <h3 className="text-lg font-semibold text-neutral-900">
               No veterinarians found
             </h3>
-            <p className="mb-6 text-neutral-600">
-              Try adjusting your search criteria or browse all veterinarians
+            <p className="text-neutral-600 mb-4">
+              Try adjusting your filters or search terms
             </p>
             <button
-              onClick={() =>
-                setFilters({
-                  specialty: "",
-                  availability: "",
-                  rating: "",
-                  experience: "",
-                  search: "",
-                })
-              }
-              className="px-6 py-3 font-medium transition-colors duration-300 border rounded-lg text-primary-600 border-primary-500 hover:bg-primary-50"
+              onClick={clearFilters}
+              className="px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100"
             >
-              Show All Veterinarians
+              Clear All Filters
             </button>
           </motion.div>
         )}

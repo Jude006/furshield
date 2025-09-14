@@ -31,7 +31,7 @@ const DashboardNav = ({ setShowSideBar, showSideBar }) => {
         
         <div className="ml-4 lg:ml-0">
           <h1 className="text-xl font-semibold text-neutral-800">Pet Owner Dashboard</h1>
-          <p className="text-sm text-neutral-500">Welcome back! Here's your pet care overview</p>
+          <p className="text-sm text-neutral-500">Welcome! Here's your pet care overview</p>
         </div>
       </div>
 

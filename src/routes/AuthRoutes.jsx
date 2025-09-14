@@ -5,10 +5,6 @@ import Signup from "../pages/auth/Signup";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyCode from "../pages/auth/VerifyCode";
-import Onboarding from "../components/common/Onboarding";
-import PetOwnerSignup from "../pages/auth/PetOwnerSignup";
-import VeterinarianSignup from "../pages/auth/VeterinarianSignup";
-import ShelterSignup from "./ShelterSignup";
 
 const AuthRoutes = () => {
   return (

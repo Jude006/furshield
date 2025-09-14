@@ -13,19 +13,100 @@ const Signup = () => {
     userType: 'petOwner',
     contactNumber: '',
     address: '',
-    agreeToTerms: false
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   
   const { register, error, clearError } = useAuth();
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[+]?[0-9\s\-\(\)]{10,}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'First name must be at least 2 characters';
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'Last name must be at least 2 characters';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.contactNumber.trim()) {
+      newErrors.contactNumber = 'Contact number is required';
+    } else if (!validatePhone(formData.contactNumber)) {
+      newErrors.contactNumber = 'Please enter a valid phone number';
+    }
+
+    if (!formData.address.trim()) {
+      newErrors.address = 'Address is required';
+    } else if (formData.address.trim().length < 5) {
+      newErrors.address = 'Address must be at least 5 characters';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (!validatePassword(formData.password)) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    
+    // Prevent non-numeric characters in contact number
+    if (name === 'contactNumber') {
+      const numericValue = value.replace(/[^0-9+\-\s\(\)]/g, '');
+      setFormData(prev => ({
+        ...prev,
+        [name]: numericValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      }));
+    }
+    
+    // Clear specific error when user types
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
     
     if (error) clearError();
   };
@@ -33,21 +114,20 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (formData.password !== formData.confirmPassword) {
-      clearError();
+    if (!validateForm()) {
       return;
     }
     
     setIsLoading(true);
     
     const userData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
+      email: formData.email.trim(),
       password: formData.password,
       userType: formData.userType,
-      contactNumber: formData.contactNumber,
-      address: formData.address
+      contactNumber: formData.contactNumber.replace(/\s/g, ''),
+      address: formData.address.trim()
     };
 
     if (formData.userType === 'shelter') {
@@ -135,9 +215,14 @@ const Signup = () => {
                     required
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                      errors.firstName ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                    }`}
                     placeholder="First name"
                   />
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="lastName" className="block mb-1 text-sm font-medium text-neutral-700">
@@ -151,9 +236,14 @@ const Signup = () => {
                     required
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                      errors.lastName ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                    }`}
                     placeholder="Last name"
                   />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                  )}
                 </div>
               </div>
 
@@ -169,9 +259,14 @@ const Signup = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                    errors.email ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                  }`}
                   placeholder="Enter your email"
                 />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -185,9 +280,14 @@ const Signup = () => {
                   required
                   value={formData.contactNumber}
                   onChange={handleChange}
-                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                    errors.contactNumber ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                  }`}
                   placeholder="Enter your phone number"
                 />
+                {errors.contactNumber && (
+                  <p className="mt-1 text-sm text-red-600">{errors.contactNumber}</p>
+                )}
               </div>
 
               <div>
@@ -201,9 +301,14 @@ const Signup = () => {
                   required
                   value={formData.address}
                   onChange={handleChange}
-                  className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                    errors.address ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                  }`}
                   placeholder="Enter your address"
                 />
+                {errors.address && (
+                  <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -219,9 +324,14 @@ const Signup = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                      errors.password ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                    }`}
                     placeholder="Password"
                   />
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="confirmPassword" className="block mb-1 text-sm font-medium text-neutral-700">
@@ -235,15 +345,16 @@ const Signup = () => {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="relative block w-full px-4 py-3 border rounded-lg border-neutral-300 placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    className={`relative block w-full px-4 py-3 border rounded-lg placeholder-neutral-500 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm ${
+                      errors.confirmPassword ? 'border-red-500' : 'border-neutral-300 focus:border-primary-500'
+                    }`}
                     placeholder="Confirm password"
                   />
+                  {errors.confirmPassword && (
+                    <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                  )}
                 </div>
               </div>
-
-              {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
-                <p className="text-sm text-red-600">Passwords do not match</p>
-              )}
 
               <div>
                 <label htmlFor="userType" className="block mb-1 text-sm font-medium text-neutral-700">
@@ -262,32 +373,10 @@ const Signup = () => {
                 </select>
               </div>
 
-              <div className="flex items-center">
-                <input
-                  id="agreeToTerms"
-                  name="agreeToTerms"
-                  type="checkbox"
-                  required
-                  checked={formData.agreeToTerms}
-                  onChange={handleChange}
-                  className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 border-neutral-300"
-                />
-                <label htmlFor="agreeToTerms" className="block ml-2 text-sm text-neutral-700">
-                  I agree to the{' '}
-                  <Link to="/terms" className="text-primary-600 hover:text-primary-500">
-                    Terms and Conditions
-                  </Link>{' '}
-                  and{' '}
-                  <Link to="/privacy" className="text-primary-600 hover:text-primary-500">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
-
               <div>
                 <motion.button
                   type="submit"
-                  disabled={isLoading || formData.password !== formData.confirmPassword || !formData.agreeToTerms}
+                  disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-colors duration-300 border border-transparent rounded-lg group bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"

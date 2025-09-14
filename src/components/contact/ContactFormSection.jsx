@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 const ContactFormSection = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const ContactFormSection = () => {
     message: '',
     userType: 'pet-owner'
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -17,9 +19,47 @@ const ContactFormSection = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true);
+
+    const formspreeEndpoint = 'https://formspree.io/f/xkgveeyj'; 
+
+    try {
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          userType: formData.userType,
+          message: formData.message,
+          _replyto: formData.email, 
+          _subject: `New Contact Form: ${formData.subject}`
+        }),
+      });
+
+      if (response.ok) {
+        toast.success('Message sent successfully! We\'ll get back to you soon.');
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+          userType: 'pet-owner'
+        });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('Failed to send message. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,6 +103,7 @@ const ContactFormSection = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      minLength={2}
                       className="w-full px-4 py-3 transition-colors duration-300 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder="Your name"
                     />
@@ -95,6 +136,7 @@ const ContactFormSection = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    minLength={5}
                     className="w-full px-4 py-3 transition-colors duration-300 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="What is this regarding?"
                   />
@@ -128,6 +170,7 @@ const ContactFormSection = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
+                    minLength={10}
                     rows={5}
                     className="w-full px-4 py-3 transition-colors duration-300 border rounded-lg border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Please share your questions or concerns..."
@@ -136,14 +179,27 @@ const ContactFormSection = () => {
 
                 <motion.button
                   type="submit"
+                  disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full px-6 py-4 font-medium text-white transition-all duration-300 rounded-lg bg-primary-600 hover:bg-primary-700"
+                  className="w-full px-6 py-4 font-medium text-white transition-all duration-300 rounded-lg bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message
-                  <svg className="inline-block w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center">
+                      Send Message
+                      <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </span>
+                  )}
                 </motion.button>
               </form>
             </div>
@@ -215,8 +271,6 @@ const ContactFormSection = () => {
                   ))}
                 </div>
               </div>
-
-           
 
               <div className="p-8 bg-white border shadow-sm rounded-2xl md:p-8 border-neutral-200">
                 <h3 className="mb-4 text-2xl font-light text-neutral-800 font-display">Other Ways to Reach Us</h3>

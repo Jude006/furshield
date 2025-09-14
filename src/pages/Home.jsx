@@ -12,8 +12,8 @@ const Home = () => {
     <div className='pt-16'>
     <Banner />
     <HowItWorks />
-    <FeaturedPets />
     <ProductShowcase />
+    <FeaturedPets />
     <VeterinariansDirectory />
     <Testimonials />
     <FinalCTA />

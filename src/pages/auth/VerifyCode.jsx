@@ -18,18 +18,16 @@ const VerifyCode = () => {
   }, [countdown, isVerified]);
 
   const handleChange = (index, value) => {
-    if (!/^\d*$/.test(value)) return; // Only allow numbers
+    if (!/^\d*$/.test(value)) return; 
     
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
 
-    // Auto-focus to next input
     if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
 
-    // Check if all digits are filled
     if (newCode.every(digit => digit !== '') && index === 5) {
       verifyCode(newCode.join(''));
     }
@@ -58,16 +56,13 @@ const VerifyCode = () => {
   };
 
   const verifyCode = (enteredCode) => {
-    // Simulate code verification
     console.log('Verifying code:', enteredCode);
-    // In a real app, you would verify this against the code sent to the user's email
     setTimeout(() => {
       setIsVerified(true);
     }, 1000);
   };
 
   const resendCode = () => {
-    // Resend code logic
     console.log('Resending code to:', email);
     setCountdown(60);
     setCode(['', '', '', '', '', '']);

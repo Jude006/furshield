@@ -1,33 +1,47 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  FiHome, 
+import { useAuth } from '../../context/AuthContext';
+import {
+  FiHome,
   FiHeart,
   FiPlus,
   FiFileText,
   FiActivity,
   FiUser,
-  FiBarChart2,
   FiBell,
   FiLogOut,
-  FiMail
+  FiMail,
 } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const ShelterSidebar = ({ setShowSideBar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const menuItems = [
     { path: '/animalShelter-dashboard', icon: FiHome, label: 'Dashboard' },
     { path: '/animalShelter-dashboard/adoptable-pets', icon: FiHeart, label: 'Adoptable Pets' },
     { path: '/animalShelter-dashboard/add-pet', icon: FiPlus, label: 'Add Pet' },
-    { path: '/animalShelter-dashboard/adoption-applications', icon: FiMail, label: 'Applications' },
     { path: '/animalShelter-dashboard/health-records', icon: FiFileText, label: 'Health Records' },
     { path: '/animalShelter-dashboard/care-logs', icon: FiActivity, label: 'Care Logs' },
-    { path: '/animalShelter-dashboard/reports', icon: FiBarChart2, label: 'Reports' },
-    { path: '/animalShelter-dashboard/notifications', icon: FiBell, label: 'Notifications' },
     { path: '/animalShelter-dashboard/shelter-profile', icon: FiUser, label: 'Shelter Profile' },
   ];
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logout();
+      toast.success('Logged out successfully');
+      navigate('/auth/login');
+    } catch (error) {
+      toast.error('Failed to logout. Please try again.');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full bg-white border-r w-80 border-neutral-200">
@@ -47,7 +61,7 @@ const ShelterSidebar = ({ setShowSideBar }) => {
         {menuItems.map((item, index) => {
           const IconComponent = item.icon;
           const isActive = location.pathname === item.path;
-          
+
           return (
             <motion.div
               key={item.path}
@@ -64,10 +78,10 @@ const ShelterSidebar = ({ setShowSideBar }) => {
                     : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800'
                 }`}
               >
-                <IconComponent 
+                <IconComponent
                   className={`w-5 h-5 transition-colors duration-200 ${
                     isActive ? 'text-green-600' : 'text-neutral-400 group-hover:text-neutral-600'
-                  }`} 
+                  }`}
                 />
                 <span className="ml-3">{item.label}</span>
                 {isActive && (
@@ -76,7 +90,7 @@ const ShelterSidebar = ({ setShowSideBar }) => {
                     className="w-2 h-2 ml-auto bg-green-600 rounded-full"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}
               </Link>
@@ -88,17 +102,31 @@ const ShelterSidebar = ({ setShowSideBar }) => {
       <div className="p-4 border-t border-neutral-200">
         <div className="flex items-center px-4 py-3 mb-2 transition-colors duration-200 rounded-lg hover:bg-neutral-50">
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-green-100 to-emerald-100">
-            <FiUser className="w-5 h-5 text-green-600" />
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt={user.shelterName || 'Shelter'}
+                className="object-cover w-10 h-10 rounded-full"
+              />
+            ) : (
+              <span className="text-lg font-medium text-green-600">
+                {user?.shelterName?.charAt(0)?.toUpperCase() || 'S'}
+              </span>
+            )}
           </div>
           <div className="flex-1 ml-3">
-            <p className="text-sm font-medium text-neutral-800">Happy Paws Shelter</p>
+            <p className="text-sm font-medium text-neutral-800">{user?.shelterName || 'Shelter'}</p>
             <p className="text-xs text-neutral-500">Animal Shelter</p>
           </div>
         </div>
-        
-        <button className="flex items-center w-full px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800">
+
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="flex items-center w-full px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           <FiLogOut className="w-5 h-5 text-neutral-400" />
-          <span className="ml-3">Sign Out</span>
+          <span className="ml-3">{isLoggingOut ? 'Signing out...' : 'Sign Out'}</span>
         </button>
       </div>
     </div>
